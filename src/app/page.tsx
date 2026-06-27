@@ -8,8 +8,11 @@ import DeckEditor from '@/components/DeckEditor'
 import GameBoard from '@/components/GameBoard'
 import GameResult from '@/components/GameResult'
 import GameHistory from '@/components/GameHistory'
+import StreakSplash from '@/components/StreakSplash'
+import StreakBadge from '@/components/StreakBadge'
 import { sampleDecks, DeckData, CardPair } from '@/data/sample-decks'
 import { fetchDecks, createDeck, seedSampleDecks, saveGameSession, SyncedDeck } from '@/lib/sync'
+import { StreakData, checkAndUpdateStreak, recordDailyPlay } from '@/lib/streaks'
 
 type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history'
 
@@ -22,11 +25,14 @@ export default function Home() {
   const [lastTime, setLastTime] = useState(0)
   const [decks, setDecks] = useState<(DeckData & { id?: string })[]>(sampleDecks)
   const [syncing, setSyncing] = useState(false)
+  const [streak, setStreak] = useState<StreakData | null>(null)
+  const [showSplash, setShowSplash] = useState(false)
 
-  // Carregar decks quando loga
+  // Carregar decks e streak quando loga
   useEffect(() => {
     if (user) {
       loadDecks()
+      loadStreak()
     }
   }, [user])
 
@@ -51,6 +57,13 @@ export default function Home() {
     }
 
     setSyncing(false)
+  }
+
+  const loadStreak = async () => {
+    if (!user) return
+    const data = await checkAndUpdateStreak(user.id)
+    setStreak(data)
+    setShowSplash(true)
   }
 
   // Se já está logado, vai direto pro menu
@@ -100,6 +113,9 @@ export default function Home() {
           selectedDeck?.cards.length || 0,
           time
         )
+        // Update streak
+        const updatedStreak = await recordDailyPlay(user.id)
+        setStreak(updatedStreak)
       }
     },
     [user, selectedDeckId, selectedDeck]
@@ -118,6 +134,8 @@ export default function Home() {
   const handleSignOut = async () => {
     await signOut()
     setDecks(sampleDecks)
+    setStreak(null)
+    setShowSplash(false)
     setGameState('login')
   }
 
@@ -134,7 +152,8 @@ export default function Home() {
       {/* Header */}
       {gameState !== 'login' && (
         <header className="flex justify-between items-center px-4 py-3 bg-slate-800/50">
-          <div className="text-sm text-slate-400">
+          <div className="flex items-center gap-3 text-sm text-slate-400">
+            {streak && <StreakBadge streak={streak} />}
             {user ? (
               <span>
                 {syncing ? '⏳ Sincronizando...' : '🔄 Sincronizado'}
@@ -210,6 +229,14 @@ export default function Home() {
           />
         )}
       </div>
+
+      {/* Streak Splash */}
+      {showSplash && streak && gameState === 'menu' && (
+        <StreakSplash
+          streak={streak}
+          onDismiss={() => setShowSplash(false)}
+        />
+      )}
     </main>
   )
 }
