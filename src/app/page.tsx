@@ -1,0 +1,215 @@
+'use client'
+
+import { useState, useCallback, useEffect } from 'react'
+import { useAuth } from '@/hooks/useAuth'
+import AuthForm from '@/components/AuthForm'
+import DeckSelector from '@/components/DeckSelector'
+import DeckEditor from '@/components/DeckEditor'
+import GameBoard from '@/components/GameBoard'
+import GameResult from '@/components/GameResult'
+import GameHistory from '@/components/GameHistory'
+import { sampleDecks, DeckData, CardPair } from '@/data/sample-decks'
+import { fetchDecks, createDeck, seedSampleDecks, saveGameSession, SyncedDeck } from '@/lib/sync'
+
+type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history'
+
+export default function Home() {
+  const { user, loading, signOut } = useAuth()
+  const [gameState, setGameState] = useState<GameState>('login')
+  const [selectedDeck, setSelectedDeck] = useState<DeckData | null>(null)
+  const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null)
+  const [lastScore, setLastScore] = useState(0)
+  const [lastTime, setLastTime] = useState(0)
+  const [decks, setDecks] = useState<(DeckData & { id?: string })[]>(sampleDecks)
+  const [syncing, setSyncing] = useState(false)
+
+  // Carregar decks quando loga
+  useEffect(() => {
+    if (user) {
+      loadDecks()
+    }
+  }, [user])
+
+  const loadDecks = async () => {
+    if (!user) return
+    setSyncing(true)
+
+    await seedSampleDecks(user.id, sampleDecks)
+
+    const syncedDecks = await fetchDecks(user.id)
+
+    if (syncedDecks.length > 0) {
+      setDecks(
+        syncedDecks.map((d: SyncedDeck) => ({
+          title: d.title,
+          subject: d.subject,
+          description: d.description || '',
+          cards: d.cards,
+          id: d.id,
+        }))
+      )
+    }
+
+    setSyncing(false)
+  }
+
+  // Se já está logado, vai direto pro menu
+  useEffect(() => {
+    if (!loading && user && gameState === 'login') {
+      setGameState('menu')
+    }
+  }, [loading, user, gameState])
+
+  const handleAuthSuccess = () => {
+    setGameState('menu')
+  }
+
+  const handleDeckSelect = (deck: DeckData & { id?: string }) => {
+    setSelectedDeck(deck)
+    setSelectedDeckId(deck.id || null)
+    setGameState('playing')
+  }
+
+  const handleCreateNew = () => {
+    setGameState('editor')
+  }
+
+  const handleSaveDeck = async (deck: { title: string; subject: string; description: string; cards: CardPair[] }) => {
+    if (user) {
+      const newDeck = await createDeck(user.id, deck)
+      if (newDeck) {
+        await loadDecks()
+      }
+    } else {
+      setDecks((prev) => [{ ...deck, id: undefined }, ...prev])
+    }
+    setGameState('menu')
+  }
+
+  const handleGameEnd = useCallback(
+    async (score: number, time: number) => {
+      setLastScore(score)
+      setLastTime(time)
+      setGameState('result')
+
+      if (user && selectedDeckId) {
+        await saveGameSession(
+          user.id,
+          selectedDeckId,
+          score,
+          selectedDeck?.cards.length || 0,
+          time
+        )
+      }
+    },
+    [user, selectedDeckId, selectedDeck]
+  )
+
+  const handlePlayAgain = () => {
+    setGameState('playing')
+  }
+
+  const handleBackToMenu = () => {
+    setSelectedDeck(null)
+    setSelectedDeckId(null)
+    setGameState('menu')
+  }
+
+  const handleSignOut = async () => {
+    await signOut()
+    setDecks(sampleDecks)
+    setGameState('login')
+  }
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="text-slate-400 text-lg">Carregando...</div>
+      </main>
+    )
+  }
+
+  return (
+    <main className="min-h-screen flex flex-col">
+      {/* Header */}
+      {gameState !== 'login' && (
+        <header className="flex justify-between items-center px-4 py-3 bg-slate-800/50">
+          <div className="text-sm text-slate-400">
+            {user ? (
+              <span>
+                {syncing ? '⏳ Sincronizando...' : '🔄 Sincronizado'}
+              </span>
+            ) : (
+              <span>⚠️ Modo offline</span>
+            )}
+          </div>
+          <div className="flex items-center gap-4">
+            {user && gameState === 'menu' && (
+              <button
+                onClick={() => setGameState('history')}
+                className="text-sm text-slate-400 hover:text-white transition-colors"
+              >
+                📊 Histórico
+              </button>
+            )}
+            {user && (
+              <button
+                onClick={handleSignOut}
+                className="text-sm text-slate-500 hover:text-slate-300 transition-colors"
+              >
+                Sair
+              </button>
+            )}
+          </div>
+        </header>
+      )}
+
+      {/* Conteúdo principal */}
+      <div className="flex-1 flex items-center justify-center">
+        {gameState === 'login' && (
+          <AuthForm onAuthSuccess={handleAuthSuccess} />
+        )}
+
+        {gameState === 'menu' && (
+          <DeckSelector
+            decks={decks}
+            onSelect={handleDeckSelect}
+            onCreateNew={handleCreateNew}
+          />
+        )}
+
+        {gameState === 'editor' && (
+          <DeckEditor
+            onSave={handleSaveDeck}
+            onCancel={handleBackToMenu}
+          />
+        )}
+
+        {gameState === 'history' && user && (
+          <GameHistory
+            userId={user.id}
+            onBack={handleBackToMenu}
+          />
+        )}
+
+        {gameState === 'playing' && selectedDeck && (
+          <GameBoard
+            cards={selectedDeck.cards}
+            onGameEnd={handleGameEnd}
+            onBack={handleBackToMenu}
+          />
+        )}
+
+        {gameState === 'result' && selectedDeck && (
+          <GameResult
+            score={lastScore}
+            time={lastTime}
+            totalPairs={selectedDeck.cards.length}
+            onPlayAgain={handlePlayAgain}
+            onBack={handleBackToMenu}
+          />
+        )}
+      </div>
+    </main>
+  )
+}
