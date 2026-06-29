@@ -13,12 +13,18 @@ import StreakBadge from '@/components/StreakBadge'
 import TodayView from '@/components/TodayView'
 import StudyMode from '@/components/StudyMode'
 import StudyProgress from '@/components/StudyProgress'
+import XpBadge from '@/components/XpBadge'
+import ProfileScreen from '@/components/ProfileScreen'
+import MedalUnlock from '@/components/MedalUnlock'
 import { sampleDecks, DeckData, CardPair } from '@/data/sample-decks'
 import { fetchDecks, createDeck, seedSampleDecks, saveGameSession, SyncedDeck } from '@/lib/sync'
 import { StreakData, checkAndUpdateStreak, recordDailyPlay } from '@/lib/streaks'
 import { fetchDueCards, getDueCount, DueCard } from '@/lib/reviews'
+import { calculateLevel, LevelInfo, getXpForMatchingGame, getXpForStreak } from '@/lib/xp'
+import { MedalCheck, UnlockedMedal } from '@/lib/medals'
+import { getProgress, recordStudySession, recordMatchingGame, recordDeckCreated, getUserMedals, UserProgress } from '@/lib/progress'
 
-type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history' | 'studying' | 'study-progress'
+type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history' | 'studying' | 'study-progress' | 'profile'
 
 export default function Home() {
   const { user, loading, signOut } = useAuth()
@@ -35,13 +41,18 @@ export default function Home() {
   const [studyCards, setStudyCards] = useState<DueCard[]>([])
   const [studyResults, setStudyResults] = useState({ correct: 0, incorrect: 0 })
   const [studyBatch, setStudyBatch] = useState(0)
+  const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null)
+  const [progress, setProgress] = useState<UserProgress | null>(null)
+  const [medals, setMedals] = useState<UnlockedMedal[]>([])
+  const [medalToast, setMedalToast] = useState<MedalCheck | null>(null)
 
-  // Carregar decks, streak e due count quando loga
+  // Load everything on login
   useEffect(() => {
     if (user) {
       loadDecks()
       loadStreak()
       loadDueCount()
+      loadProgress()
     }
   }, [user])
 
@@ -81,7 +92,22 @@ export default function Home() {
     setDueCount(count)
   }
 
-  // Se já está logado, vai direto pro menu
+  const loadProgress = async () => {
+    if (!user) return
+    const prog = await getProgress(user.id)
+    setProgress(prog)
+    setLevelInfo(calculateLevel(prog.totalXp))
+    const userMedals = await getUserMedals(user.id)
+    setMedals(userMedals)
+  }
+
+  const showMedalToast = (newMedals: MedalCheck[]) => {
+    if (newMedals.length > 0) {
+      setMedalToast(newMedals[0])
+    }
+  }
+
+  // Auto-navigate to menu if logged in
   useEffect(() => {
     if (!loading && user && gameState === 'login') {
       setGameState('menu')
@@ -107,6 +133,10 @@ export default function Home() {
       const newDeck = await createDeck(user.id, deck)
       if (newDeck) {
         await loadDecks()
+        const { progress: prog, newMedals } = await recordDeckCreated(user.id)
+        setProgress(prog)
+        setLevelInfo(calculateLevel(prog.totalXp))
+        showMedalToast(newMedals)
       }
     } else {
       setDecks((prev) => [{ ...deck, id: undefined }, ...prev])
@@ -128,9 +158,24 @@ export default function Home() {
           selectedDeck?.cards.length || 0,
           time
         )
+
         // Update streak
         const updatedStreak = await recordDailyPlay(user.id)
         setStreak(updatedStreak)
+
+        // XP for matching game
+        const matches = selectedDeck?.cards.length || 0
+        const attempts = matches > 0 ? Math.round(matches / (score / 1000 + 1)) : matches
+        const xp = getXpForMatchingGame(matches, attempts)
+        const { progress: prog, newMedals } = await recordMatchingGame(user.id, xp, time)
+        setProgress(prog)
+        setLevelInfo(calculateLevel(prog.totalXp))
+        showMedalToast(newMedals)
+
+        // XP for streak
+        if (!updatedStreak.playedToday) {
+          // Already handled in recordDailyPlay logic
+        }
       }
     },
     [user, selectedDeckId, selectedDeck]
@@ -153,10 +198,22 @@ export default function Home() {
     }))
     setGameState('study-progress')
 
-    // Update streak after study session
     if (user) {
+      // Update streak
       const updatedStreak = await recordDailyPlay(user.id)
       setStreak(updatedStreak)
+
+      // XP for study session
+      const xpEarned = results.correct * 15 + results.incorrect * 5
+      const { progress: prog, newMedals } = await recordStudySession(
+        user.id,
+        results.correct + results.incorrect,
+        results.correct,
+        xpEarned
+      )
+      setProgress(prog)
+      setLevelInfo(calculateLevel(prog.totalXp))
+      showMedalToast(newMedals)
     }
   }
 
@@ -173,7 +230,10 @@ export default function Home() {
     setSelectedDeck(null)
     setSelectedDeckId(null)
     setGameState('menu')
-    if (user) loadDueCount()
+    if (user) {
+      loadDueCount()
+      loadProgress()
+    }
   }
 
   const handleSignOut = async () => {
@@ -182,6 +242,9 @@ export default function Home() {
     setStreak(null)
     setShowSplash(false)
     setDueCount(0)
+    setProgress(null)
+    setLevelInfo(null)
+    setMedals([])
     setGameState('login')
   }
 
@@ -200,12 +263,15 @@ export default function Home() {
         <header className="flex justify-between items-center px-4 py-3 bg-slate-800/50">
           <div className="flex items-center gap-3 text-sm text-slate-400">
             {streak && <StreakBadge streak={streak} />}
+            {levelInfo && (
+              <XpBadge levelInfo={levelInfo} onClick={() => setGameState('profile')} />
+            )}
             {user ? (
               <span>
-                {syncing ? '⏳ Sincronizando...' : '🔄 Sincronizado'}
+                {syncing ? '⏳' : '🔄'}
               </span>
             ) : (
-              <span>⚠️ Modo offline</span>
+              <span>⚠️</span>
             )}
           </div>
           <div className="flex items-center gap-4">
@@ -214,7 +280,7 @@ export default function Home() {
                 onClick={() => setGameState('history')}
                 className="text-sm text-slate-400 hover:text-white transition-colors"
               >
-                📊 Histórico
+                📊
               </button>
             )}
             {user && (
@@ -229,7 +295,7 @@ export default function Home() {
         </header>
       )}
 
-      {/* Conteúdo principal */}
+      {/* Main content */}
       <div className="flex-1 flex items-center justify-center">
         {gameState === 'login' && (
           <AuthForm onAuthSuccess={handleAuthSuccess} />
@@ -297,6 +363,15 @@ export default function Home() {
             onBack={handleBackToMenu}
           />
         )}
+
+        {gameState === 'profile' && levelInfo && progress && (
+          <ProfileScreen
+            levelInfo={levelInfo}
+            progress={progress}
+            medals={medals}
+            onBack={handleBackToMenu}
+          />
+        )}
       </div>
 
       {/* Streak Splash */}
@@ -304,6 +379,15 @@ export default function Home() {
         <StreakSplash
           streak={streak}
           onDismiss={() => setShowSplash(false)}
+        />
+      )}
+
+      {/* Medal Toast */}
+      {medalToast && (
+        <MedalUnlock
+          medalId={medalToast.medalId}
+          tier={medalToast.tier}
+          onDismiss={() => setMedalToast(null)}
         />
       )}
     </main>

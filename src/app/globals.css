@@ -92,3 +92,18 @@
 .animate-pulse-fire {
   animation: pulse-fire 1.5s ease-in-out infinite;
 }
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
