@@ -13,6 +13,7 @@ import StreakBadge from '@/components/StreakBadge'
 import TodayView from '@/components/TodayView'
 import StudyMode from '@/components/StudyMode'
 import StudyProgress from '@/components/StudyProgress'
+import ImportDeck from '@/components/ImportDeck'
 import XpBadge from '@/components/XpBadge'
 import ProfileScreen from '@/components/ProfileScreen'
 import MedalUnlock from '@/components/MedalUnlock'
@@ -24,7 +25,7 @@ import { calculateLevel, LevelInfo, getXpForMatchingGame, getXpForStreak } from 
 import { MedalCheck, UnlockedMedal } from '@/lib/medals'
 import { getProgress, recordStudySession, recordMatchingGame, recordDeckCreated, getUserMedals, UserProgress } from '@/lib/progress'
 
-type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history' | 'studying' | 'study-progress' | 'profile'
+type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history' | 'studying' | 'study-progress' | 'profile' | 'importing'
 
 export default function Home() {
   const { user, loading, signOut } = useAuth()
@@ -301,6 +302,7 @@ export default function Home() {
               decks={decks}
               onSelect={handleDeckSelect}
               onCreateNew={handleCreateNew}
+              onImport={() => setGameState('importing')}
             />
           </div>
         )}
@@ -308,6 +310,13 @@ export default function Home() {
         {gameState === 'editor' && (
           <DeckEditor
             onSave={handleSaveDeck}
+            onCancel={handleBackToMenu}
+          />
+        )}
+
+        {gameState === 'importing' && (
+          <ImportDeck
+            onImport={handleSaveDeck}
             onCancel={handleBackToMenu}
           />
         )}
