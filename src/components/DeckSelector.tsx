@@ -31,7 +31,7 @@ export default function DeckSelector({ decks, onSelect, onCreateNew }: DeckSelec
         {/* Criar novo deck */}
         <button
           onClick={onCreateNew}
-          className="w-full px-4 py-4 rounded-xl border border-dashed border-slate-700 text-left transition-all hover:border-slate-500 hover:bg-slate-800/30 active:scale-[0.99]"
+          className="w-full px-4 py-4 rounded-xl border border-dashed border-slate-700 text-left transition-all hover:border-slate-500 hover:bg-slate-800/30 active:scale-[0.99] cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 text-sm">+</div>
@@ -47,7 +47,7 @@ export default function DeckSelector({ decks, onSelect, onCreateNew }: DeckSelec
           <button
             key={index}
             onClick={() => onSelect(deck)}
-            className="w-full px-4 py-4 rounded-xl bg-slate-800/50 text-left transition-all hover:bg-slate-800 active:scale-[0.99]"
+            className="w-full px-4 py-4 rounded-xl bg-slate-800/50 text-left transition-all hover:bg-slate-800 active:scale-[0.99] cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className={`w-2 h-2 rounded-full ${subjectDots[deck.subject] || 'bg-slate-500'}`} />
