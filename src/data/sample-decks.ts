@@ -1,3 +1,9 @@
+import { craseCards } from './cards-crase'
+import { regenciaCards } from './cards-regencia'
+import { concordanciaCards } from './cards-concordancia'
+import { pontuacaoCards } from './cards-pontuacao'
+import { colocacaoCards } from './cards-colocacao'
+
 export interface CardPair {
   front: string
   back: string
@@ -55,5 +61,35 @@ export const sampleDecks: DeckData[] = [
       { front: 'Pleonasmo', back: 'Redundância para ênfase: "Vi com meus próprios olhos"' },
       { front: 'Catacrese', back: 'Metáfora cristalizada pelo uso: "pé da mesa", "braço da cadeira"' },
     ],
+  },
+  {
+    title: 'Crase',
+    subject: 'Português',
+    description: '50 cards: regras, exceções, pegadinhas de banca',
+    cards: craseCards,
+  },
+  {
+    title: 'Regência Verbal e Nominal',
+    subject: 'Português',
+    description: '50 cards: verbos e nomes mais cobrados em concurso',
+    cards: regenciaCards,
+  },
+  {
+    title: 'Concordância Verbal e Nominal',
+    subject: 'Português',
+    description: '50 cards: sujeito composto, partícula SE, casos especiais',
+    cards: concordanciaCards,
+  },
+  {
+    title: 'Pontuação',
+    subject: 'Português',
+    description: '50 cards: vírgula, ponto e vírgula, dois-pontos, travessão',
+    cards: pontuacaoCards,
+  },
+  {
+    title: 'Colocação Pronominal',
+    subject: 'Português',
+    description: '50 cards: próclise, mesóclise, ênclise, locuções verbais',
+    cards: colocacaoCards,
   },
 ]
