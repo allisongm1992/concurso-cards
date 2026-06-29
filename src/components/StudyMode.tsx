@@ -53,36 +53,36 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
   if (!currentCard) return null
 
   return (
-    <div className="w-full max-w-lg mx-auto px-4 py-6">
+    <div className="w-full max-w-lg mx-auto px-6 py-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-12">
         <button
           onClick={onBack}
-          className="text-sm text-slate-500 hover:text-white transition-colors"
+          className="text-sm text-neutral-600 hover:text-neutral-300 transition-colors cursor-pointer"
         >
           ← Voltar
         </button>
-        <div className="flex items-center gap-4 text-xs text-slate-500">
+        <div className="flex items-center gap-4 text-xs text-neutral-600">
           <span className="tabular-nums">{currentIndex + 1}/{cards.length}</span>
-          <span className="text-green-400">{correct}✓</span>
+          <span className="text-emerald-500">{correct}✓</span>
           <span className="text-red-400">{incorrect}✗</span>
         </div>
       </div>
 
       {/* Card */}
-      <div className="min-h-[280px] flex flex-col items-center justify-center text-center px-6">
+      <div className="min-h-[320px] flex flex-col items-center justify-center text-center">
         {currentCard.deckTitle && (
-          <div className="text-[11px] text-slate-600 mb-4">
+          <div className="text-[11px] text-neutral-700 uppercase tracking-wider mb-6">
             {currentCard.deckTitle}
           </div>
         )}
-        <div className="text-lg font-medium text-white leading-relaxed">
+        <div className="text-xl font-medium text-neutral-100 leading-relaxed">
           {currentCard.front}
         </div>
 
         {revealed && (
-          <div className="mt-8 pt-8 border-t border-slate-800 w-full animate-fade-in">
-            <div className="text-base text-blue-300 leading-relaxed">
+          <div className="mt-10 pt-10 border-t border-neutral-900 w-full animate-fade-in">
+            <div className="text-base text-emerald-300 leading-relaxed">
               {currentCard.back}
             </div>
           </div>
@@ -90,11 +90,11 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
       </div>
 
       {/* Actions */}
-      <div className="mt-8">
+      <div className="mt-12">
         {!revealed ? (
           <button
             onClick={handleReveal}
-            className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-medium transition-colors"
+            className="w-full py-4 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-200 rounded-lg font-medium transition-colors cursor-pointer"
           >
             Revelar
           </button>
@@ -103,14 +103,14 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
             <button
               onClick={() => handleRate('again')}
               disabled={transitioning}
-              className="flex-1 py-4 bg-slate-800 hover:bg-red-900/30 text-slate-300 hover:text-red-300 border border-slate-700 hover:border-red-800 rounded-xl font-medium transition-colors disabled:opacity-50"
+              className="flex-1 py-4 bg-neutral-900 border border-neutral-800 hover:border-red-800 text-neutral-400 hover:text-red-300 rounded-lg font-medium transition-colors disabled:opacity-50 cursor-pointer"
             >
               Não sabia
             </button>
             <button
               onClick={() => handleRate('good')}
               disabled={transitioning}
-              className="flex-1 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-colors disabled:opacity-50"
+              className="flex-1 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50 cursor-pointer"
             >
               Sabia
             </button>

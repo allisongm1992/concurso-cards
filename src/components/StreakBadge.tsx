@@ -13,18 +13,14 @@ export default function StreakBadge({ streak }: StreakBadgeProps) {
 
   return (
     <div
-      className={`flex items-center gap-1 text-sm font-medium ${
+      className={`text-xs tabular-nums ${
         streak.streakAtRisk
-          ? 'text-amber-400 animate-pulse-fire'
-          : 'text-orange-400'
+          ? 'text-amber-500 animate-pulse-fire'
+          : 'text-neutral-500'
       }`}
-      title={`Sequência: ${streak.currentStreak} dias${streak.freezeAvailable ? ' | ❄️ Freeze disponível' : ''}`}
+      title={`${streak.currentStreak} dias${streak.freezeAvailable ? ' · freeze disponível' : ''}`}
     >
-      <span>🔥</span>
-      <span>{streak.currentStreak}</span>
-      {streak.freezeAvailable && (
-        <span className="text-blue-400 text-xs ml-1" title="Freeze disponível">❄️</span>
-      )}
+      {streak.currentStreak}d
     </div>
   )
 }

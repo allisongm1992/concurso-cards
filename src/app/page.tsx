@@ -252,7 +252,7 @@ export default function Home() {
   if (loading) {
     return (
       <main className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-400 text-lg">Carregando...</div>
+        <div className="text-neutral-600 text-sm">Carregando...</div>
       </main>
     )
   }
@@ -261,18 +261,18 @@ export default function Home() {
     <main className="min-h-screen flex flex-col">
       {/* Header */}
       {gameState !== 'login' && (
-        <header className="flex justify-between items-center px-4 py-3 border-b border-slate-800">
+        <header className="flex justify-between items-center px-5 py-4">
           <div className="flex items-center gap-4">
             {streak && <StreakBadge streak={streak} />}
             {levelInfo && (
               <XpBadge levelInfo={levelInfo} onClick={() => setGameState('profile')} />
             )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {user && gameState === 'menu' && (
               <button
                 onClick={() => setGameState('history')}
-                className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                className="text-xs text-neutral-700 hover:text-neutral-400 transition-colors cursor-pointer"
               >
                 Histórico
               </button>
@@ -280,7 +280,7 @@ export default function Home() {
             {user && (
               <button
                 onClick={handleSignOut}
-                className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
+                className="text-xs text-neutral-800 hover:text-neutral-500 transition-colors cursor-pointer"
               >
                 Sair
               </button>

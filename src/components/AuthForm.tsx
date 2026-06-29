@@ -56,20 +56,19 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
   }
 
   return (
-    <div className="w-full max-w-sm mx-auto px-6 py-12">
-      <div className="text-center mb-10">
-        <h1 className="text-2xl font-bold text-white">Concurso Cards</h1>
-        <p className="text-sm text-slate-500 mt-2">
-          {isSignUp ? 'Crie sua conta para sincronizar' : 'Entre para sincronizar seus dados'}
+    <div className="w-full max-w-sm mx-auto px-6 py-16">
+      <div className="mb-12">
+        <h1 className="text-3xl font-bold tracking-tight">Concurso Cards</h1>
+        <p className="text-neutral-500 text-sm mt-2">
+          {isSignUp ? 'Crie sua conta' : 'Entre para continuar'}
         </p>
       </div>
 
       <div>
-        {/* Google Login */}
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full py-3 px-4 bg-white text-slate-900 rounded-lg font-medium flex items-center justify-center gap-3 hover:bg-slate-100 transition-colors disabled:opacity-50"
+          className="w-full py-3 px-4 bg-neutral-900 border border-neutral-800 text-neutral-100 rounded-lg font-medium flex items-center justify-center gap-3 hover:bg-neutral-800 transition-colors disabled:opacity-50 cursor-pointer"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -80,46 +79,39 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
           Entrar com Google
         </button>
 
-        <div className="flex items-center my-6">
-          <div className="flex-1 border-t border-slate-800"></div>
-          <span className="px-3 text-xs text-slate-600">ou</span>
-          <div className="flex-1 border-t border-slate-800"></div>
+        <div className="flex items-center my-8">
+          <div className="flex-1 border-t border-neutral-800"></div>
+          <span className="px-3 text-xs text-neutral-600">ou</span>
+          <div className="flex-1 border-t border-neutral-800"></div>
         </div>
 
-        {/* Email/Password */}
         <form onSubmit={handleEmailAuth} className="space-y-3">
-          <div>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
-              placeholder="Email"
-            />
-          </div>
-          <div>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
-              placeholder="Senha"
-            />
-          </div>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
+            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+            placeholder="Senha"
+          />
 
           {error && (
-            <div className="text-red-400 text-xs bg-red-400/5 border border-red-400/10 p-3 rounded-lg">
+            <div className="text-red-400 text-xs p-3 border border-red-900/30 rounded-lg">
               {error}
             </div>
           )}
 
           {message && (
-            <div className="text-green-400 text-xs bg-green-400/5 border border-green-400/10 p-3 rounded-lg">
+            <div className="text-emerald-400 text-xs p-3 border border-emerald-900/30 rounded-lg">
               {message}
             </div>
           )}
@@ -127,29 +119,27 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium text-sm text-white transition-colors disabled:opacity-50"
+            className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 rounded-lg font-medium text-sm text-white transition-colors disabled:opacity-50 cursor-pointer"
           >
             {loading ? 'Carregando...' : isSignUp ? 'Criar conta' : 'Entrar'}
           </button>
         </form>
 
-        <div className="mt-4 text-center">
-          <button
-            onClick={() => {
-              setIsSignUp(!isSignUp)
-              setError(null)
-              setMessage(null)
-            }}
-            className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
-          >
-            {isSignUp ? 'Já tem conta? Entre aqui' : 'Não tem conta? Cadastre-se'}
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            setIsSignUp(!isSignUp)
+            setError(null)
+            setMessage(null)
+          }}
+          className="w-full mt-4 text-xs text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer"
+        >
+          {isSignUp ? 'Já tem conta? Entre' : 'Criar conta'}
+        </button>
       </div>
 
       <button
         onClick={onAuthSuccess}
-        className="w-full mt-8 py-3 text-slate-600 hover:text-slate-400 text-xs transition-colors"
+        className="w-full mt-12 py-3 text-neutral-700 hover:text-neutral-400 text-xs transition-colors cursor-pointer"
       >
         Continuar sem conta
       </button>

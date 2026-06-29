@@ -19,7 +19,7 @@ export default function StreakSplash({ streak, onDismiss }: StreakSplashProps) {
   return (
     <div
       onClick={onDismiss}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/95 cursor-pointer"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/98 cursor-pointer"
       role="button"
       aria-label="Fechar"
       tabIndex={0}
@@ -27,29 +27,23 @@ export default function StreakSplash({ streak, onDismiss }: StreakSplashProps) {
     >
       <div className="text-center px-8 animate-fade-in">
         {streak.currentStreak > 0 && (
-          <div className="text-5xl font-bold text-white mb-3">
+          <div className="text-6xl font-bold text-neutral-100 tracking-tight">
             {streak.currentStreak}
           </div>
         )}
 
-        <div className="text-lg text-slate-200">
+        <div className="text-lg text-neutral-400 mt-3">
           {message}
         </div>
 
         {streak.streakAtRisk && (
-          <div className="text-amber-400 text-sm mt-4">
-            Jogue hoje pra manter a sequência
+          <div className="text-amber-500 text-sm mt-6">
+            Jogue hoje pra manter
           </div>
         )}
 
-        {streak.longestStreak > streak.currentStreak && (
-          <div className="text-slate-600 text-xs mt-6">
-            Recorde: {streak.longestStreak} dias
-          </div>
-        )}
-
-        <div className="text-slate-700 text-xs mt-8">
-          Toque para continuar
+        <div className="text-neutral-800 text-xs mt-12">
+          toque para continuar
         </div>
       </div>
     </div>
