@@ -10,11 +10,15 @@ import GameResult from '@/components/GameResult'
 import GameHistory from '@/components/GameHistory'
 import StreakSplash from '@/components/StreakSplash'
 import StreakBadge from '@/components/StreakBadge'
+import TodayView from '@/components/TodayView'
+import StudyMode from '@/components/StudyMode'
+import StudyProgress from '@/components/StudyProgress'
 import { sampleDecks, DeckData, CardPair } from '@/data/sample-decks'
 import { fetchDecks, createDeck, seedSampleDecks, saveGameSession, SyncedDeck } from '@/lib/sync'
 import { StreakData, checkAndUpdateStreak, recordDailyPlay } from '@/lib/streaks'
+import { fetchDueCards, getDueCount, DueCard } from '@/lib/reviews'
 
-type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history'
+type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history' | 'studying' | 'study-progress'
 
 export default function Home() {
   const { user, loading, signOut } = useAuth()
@@ -27,12 +31,17 @@ export default function Home() {
   const [syncing, setSyncing] = useState(false)
   const [streak, setStreak] = useState<StreakData | null>(null)
   const [showSplash, setShowSplash] = useState(false)
+  const [dueCount, setDueCount] = useState(0)
+  const [studyCards, setStudyCards] = useState<DueCard[]>([])
+  const [studyResults, setStudyResults] = useState({ correct: 0, incorrect: 0 })
+  const [studyBatch, setStudyBatch] = useState(0)
 
-  // Carregar decks e streak quando loga
+  // Carregar decks, streak e due count quando loga
   useEffect(() => {
     if (user) {
       loadDecks()
       loadStreak()
+      loadDueCount()
     }
   }, [user])
 
@@ -64,6 +73,12 @@ export default function Home() {
     const data = await checkAndUpdateStreak(user.id)
     setStreak(data)
     setShowSplash(true)
+  }
+
+  const loadDueCount = async () => {
+    if (!user) return
+    const count = await getDueCount(user.id)
+    setDueCount(count)
   }
 
   // Se já está logado, vai direto pro menu
@@ -121,6 +136,35 @@ export default function Home() {
     [user, selectedDeckId, selectedDeck]
   )
 
+  const handleStartStudy = async (deckId?: string) => {
+    if (!user) return
+    const cards = await fetchDueCards(user.id, deckId)
+    if (cards.length === 0) return
+    setStudyCards(cards)
+    setStudyBatch(0)
+    setStudyResults({ correct: 0, incorrect: 0 })
+    setGameState('studying')
+  }
+
+  const handleStudyComplete = async (results: { correct: number; incorrect: number }) => {
+    setStudyResults(prev => ({
+      correct: prev.correct + results.correct,
+      incorrect: prev.incorrect + results.incorrect,
+    }))
+    setGameState('study-progress')
+
+    // Update streak after study session
+    if (user) {
+      const updatedStreak = await recordDailyPlay(user.id)
+      setStreak(updatedStreak)
+    }
+  }
+
+  const handleStudyContinue = () => {
+    setStudyBatch(prev => prev + 1)
+    setGameState('studying')
+  }
+
   const handlePlayAgain = () => {
     setGameState('playing')
   }
@@ -129,6 +173,7 @@ export default function Home() {
     setSelectedDeck(null)
     setSelectedDeckId(null)
     setGameState('menu')
+    if (user) loadDueCount()
   }
 
   const handleSignOut = async () => {
@@ -136,6 +181,7 @@ export default function Home() {
     setDecks(sampleDecks)
     setStreak(null)
     setShowSplash(false)
+    setDueCount(0)
     setGameState('login')
   }
 
@@ -190,11 +236,14 @@ export default function Home() {
         )}
 
         {gameState === 'menu' && (
-          <DeckSelector
-            decks={decks}
-            onSelect={handleDeckSelect}
-            onCreateNew={handleCreateNew}
-          />
+          <div className="w-full max-w-2xl mx-auto px-4">
+            <TodayView dueCount={dueCount} onStudy={() => handleStartStudy()} />
+            <DeckSelector
+              decks={decks}
+              onSelect={handleDeckSelect}
+              onCreateNew={handleCreateNew}
+            />
+          </div>
         )}
 
         {gameState === 'editor' && (
@@ -225,6 +274,26 @@ export default function Home() {
             time={lastTime}
             totalPairs={selectedDeck.cards.length}
             onPlayAgain={handlePlayAgain}
+            onBack={handleBackToMenu}
+          />
+        )}
+
+        {gameState === 'studying' && user && studyCards.length > 0 && (
+          <StudyMode
+            cards={studyCards.slice(studyBatch * 20, (studyBatch + 1) * 20)}
+            userId={user.id}
+            onComplete={handleStudyComplete}
+            onBack={handleBackToMenu}
+          />
+        )}
+
+        {gameState === 'study-progress' && (
+          <StudyProgress
+            correct={studyResults.correct}
+            incorrect={studyResults.incorrect}
+            totalDue={studyCards.length}
+            reviewed={Math.min((studyBatch + 1) * 20, studyCards.length)}
+            onContinue={handleStudyContinue}
             onBack={handleBackToMenu}
           />
         )}
