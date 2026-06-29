@@ -55,57 +55,59 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
   return (
     <div className="w-full max-w-lg mx-auto px-4 py-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-8">
         <button
           onClick={onBack}
-          className="text-slate-400 hover:text-white transition-colors"
+          className="text-sm text-slate-500 hover:text-white transition-colors"
         >
           ← Voltar
         </button>
-        <div className="text-sm text-slate-400">
-          {currentIndex + 1}/{cards.length}
-        </div>
-        <div className="flex gap-3 text-sm">
-          <span className="text-green-400">✅ {correct}</span>
-          <span className="text-red-400">❌ {incorrect}</span>
+        <div className="flex items-center gap-4 text-xs text-slate-500">
+          <span className="tabular-nums">{currentIndex + 1}/{cards.length}</span>
+          <span className="text-green-400">{correct}✓</span>
+          <span className="text-red-400">{incorrect}✗</span>
         </div>
       </div>
 
       {/* Card */}
-      <div className="bg-slate-800 rounded-2xl p-8 min-h-[300px] flex flex-col items-center justify-center text-center">
-        <div className="text-xl font-semibold text-white mb-6">
+      <div className="min-h-[280px] flex flex-col items-center justify-center text-center px-6">
+        <div className="text-lg font-medium text-white leading-relaxed">
           {currentCard.front}
         </div>
 
         {revealed && (
-          <div className="text-lg text-blue-300 border-t border-slate-700 pt-6 mt-2 w-full animate-fade-in">
-            {currentCard.back}
+          <div className="mt-8 pt-8 border-t border-slate-800 w-full animate-fade-in">
+            <div className="text-base text-blue-300 leading-relaxed">
+              {currentCard.back}
+            </div>
           </div>
         )}
       </div>
 
       {/* Actions */}
-      <div className="mt-6">
+      <div className="mt-8">
         {!revealed ? (
           <button
             onClick={handleReveal}
-            className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium text-lg transition-colors"
+            className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-medium transition-colors"
           >
-            Revelar Resposta
+            Revelar
           </button>
         ) : (
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <button
               onClick={() => handleRate('again')}
-              className="flex-1 py-4 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-600/30 rounded-xl font-medium text-lg transition-colors"
+              disabled={transitioning}
+              className="flex-1 py-4 bg-slate-800 hover:bg-red-900/30 text-slate-300 hover:text-red-300 border border-slate-700 hover:border-red-800 rounded-xl font-medium transition-colors disabled:opacity-50"
             >
-              Não sabia ❌
+              Não sabia
             </button>
             <button
               onClick={() => handleRate('good')}
-              className="flex-1 py-4 bg-green-600/20 hover:bg-green-600/30 text-green-400 border border-green-600/30 rounded-xl font-medium text-lg transition-colors"
+              disabled={transitioning}
+              className="flex-1 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-colors disabled:opacity-50"
             >
-              Sabia ✅
+              Sabia
             </button>
           </div>
         )}

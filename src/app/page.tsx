@@ -260,33 +260,26 @@ export default function Home() {
     <main className="min-h-screen flex flex-col">
       {/* Header */}
       {gameState !== 'login' && (
-        <header className="flex justify-between items-center px-4 py-3 bg-slate-800/50">
-          <div className="flex items-center gap-3 text-sm text-slate-400">
+        <header className="flex justify-between items-center px-4 py-3 border-b border-slate-800">
+          <div className="flex items-center gap-4">
             {streak && <StreakBadge streak={streak} />}
             {levelInfo && (
               <XpBadge levelInfo={levelInfo} onClick={() => setGameState('profile')} />
             )}
-            {user ? (
-              <span>
-                {syncing ? '⏳' : '🔄'}
-              </span>
-            ) : (
-              <span>⚠️</span>
-            )}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {user && gameState === 'menu' && (
               <button
                 onClick={() => setGameState('history')}
-                className="text-sm text-slate-400 hover:text-white transition-colors"
+                className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
               >
-                📊
+                Histórico
               </button>
             )}
             {user && (
               <button
                 onClick={handleSignOut}
-                className="text-sm text-slate-500 hover:text-slate-300 transition-colors"
+                className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
               >
                 Sair
               </button>

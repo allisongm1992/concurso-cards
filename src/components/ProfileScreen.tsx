@@ -11,16 +11,10 @@ interface ProfileScreenProps {
   onBack: () => void
 }
 
-const tierBorders: Record<Tier, string> = {
-  bronze: 'border-orange-400',
-  silver: 'border-slate-300',
-  gold: 'border-yellow-400',
-}
-
-const tierLabels: Record<Tier, string> = {
-  bronze: 'Bronze',
-  silver: 'Prata',
-  gold: 'Ouro',
+const tierColors: Record<Tier, string> = {
+  bronze: 'ring-orange-400/60',
+  silver: 'ring-slate-300/60',
+  gold: 'ring-yellow-400/60',
 }
 
 export default function ProfileScreen({ levelInfo, progress, medals, onBack }: ProfileScreenProps) {
@@ -42,42 +36,37 @@ export default function ProfileScreen({ levelInfo, progress, medals, onBack }: P
   return (
     <div className="w-full max-w-lg mx-auto px-4 py-6">
       {/* Header */}
-      <div className="flex items-center mb-6">
+      <div className="flex items-center mb-8">
         <button
           onClick={onBack}
-          className="text-slate-400 hover:text-white transition-colors"
+          className="text-sm text-slate-500 hover:text-white transition-colors"
         >
           ← Voltar
         </button>
-        <div className="flex-1 text-center text-white font-medium">Perfil</div>
-        <div className="w-16" />
       </div>
 
-      {/* Level Block */}
-      <div className="bg-slate-800 rounded-2xl p-6 mb-6 text-center">
-        <div className={`text-sm font-medium ${levelInfo.faixaColor} mb-1`}>
+      {/* Level */}
+      <div className="mb-10 text-center">
+        <div className={`text-xs font-medium ${levelInfo.faixaColor} uppercase tracking-wide`}>
           {levelInfo.faixa}
         </div>
-        <div className="text-4xl font-bold text-white mb-2">
-          Nível {levelInfo.level}
+        <div className="text-4xl font-bold text-white mt-1">
+          {levelInfo.level}
         </div>
-        <div className="w-full h-3 bg-slate-700 rounded-full overflow-hidden mb-2">
+        <div className="w-full max-w-48 mx-auto h-1.5 bg-slate-800 rounded-full overflow-hidden mt-4">
           <div
             className="h-full bg-blue-500 rounded-full transition-all duration-500"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
-        <div className="text-sm text-slate-400">
+        <div className="text-xs text-slate-600 mt-2">
           {levelInfo.xpInLevel} / {levelInfo.xpForLevel} XP
-        </div>
-        <div className="text-xs text-slate-500 mt-1">
-          Total: {progress.totalXp.toLocaleString()} XP
         </div>
       </div>
 
-      {/* Medals Grid */}
-      <div className="bg-slate-800 rounded-2xl p-6 mb-6">
-        <div className="text-white font-medium mb-4">Conquistas</div>
+      {/* Medals */}
+      <div className="mb-10">
+        <div className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-4">Conquistas</div>
         <div className="grid grid-cols-5 gap-3">
           {MEDALS.map((medal) => {
             const highestTier = getHighestTier(medal.id)
@@ -86,15 +75,15 @@ export default function ProfileScreen({ levelInfo, progress, medals, onBack }: P
             return (
               <div
                 key={medal.id}
-                className={`flex flex-col items-center p-2 rounded-xl ${
+                className={`flex flex-col items-center p-2 rounded-lg ${
                   isUnlocked
-                    ? `border-2 ${tierBorders[highestTier!]} bg-slate-700/50`
-                    : 'border border-slate-700 opacity-40'
+                    ? `ring-2 ${tierColors[highestTier!]} bg-slate-800/50`
+                    : 'opacity-30'
                 }`}
-                title={isUnlocked ? `${medal.name} ${tierLabels[highestTier!]}` : `${medal.name} — trancado`}
+                title={medal.name}
               >
-                <span className="text-xl">{isUnlocked ? medal.emoji : '🔒'}</span>
-                <span className="text-[10px] text-slate-400 mt-1 truncate w-full text-center">
+                <span className="text-lg">{isUnlocked ? medal.emoji : '·'}</span>
+                <span className="text-[9px] text-slate-500 mt-1 truncate w-full text-center">
                   {medal.name}
                 </span>
               </div>
@@ -104,24 +93,24 @@ export default function ProfileScreen({ levelInfo, progress, medals, onBack }: P
       </div>
 
       {/* Stats */}
-      <div className="bg-slate-800 rounded-2xl p-6">
-        <div className="text-white font-medium mb-4">Estatísticas</div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-400">{progress.totalReviews}</div>
-            <div className="text-xs text-slate-500">Cards revisados</div>
+      <div>
+        <div className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-4">Estatísticas</div>
+        <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+          <div>
+            <div className="text-xl font-bold text-white tabular-nums">{progress.totalReviews}</div>
+            <div className="text-xs text-slate-600">Cards revisados</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-400">{accuracy}%</div>
-            <div className="text-xs text-slate-500">Acurácia</div>
+          <div>
+            <div className="text-xl font-bold text-white tabular-nums">{accuracy}%</div>
+            <div className="text-xs text-slate-600">Acurácia</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-400">{progress.gamesPlayed}</div>
-            <div className="text-xs text-slate-500">Jogos</div>
+          <div>
+            <div className="text-xl font-bold text-white tabular-nums">{progress.gamesPlayed}</div>
+            <div className="text-xs text-slate-600">Jogos</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-amber-400">{progress.decksCreated}</div>
-            <div className="text-xs text-slate-500">Decks criados</div>
+          <div>
+            <div className="text-xl font-bold text-white tabular-nums">{progress.totalXp.toLocaleString()}</div>
+            <div className="text-xs text-slate-600">XP total</div>
           </div>
         </div>
       </div>

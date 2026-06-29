@@ -22,46 +22,45 @@ export default function StudyProgress({
 
   return (
     <div className="w-full max-w-lg mx-auto px-4 py-6 text-center">
-      <div className="bg-slate-800 rounded-2xl p-8">
-        <div className="text-2xl font-bold text-white mb-2">
-          {remaining <= 0 ? '🎉 Sessão completa!' : '📊 Progresso'}
+      <div className="mb-10">
+        <div className="text-2xl font-bold text-white">
+          {remaining <= 0 ? 'Sessão completa' : 'Progresso'}
         </div>
-
-        <div className="text-slate-400 mb-6">
-          {reviewed}/{totalDue} cards revisados
+        <div className="text-sm text-slate-500 mt-1">
+          {reviewed} de {totalDue} cards revisados
         </div>
+      </div>
 
-        <div className="flex justify-center gap-8 mb-6">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-green-400">{correct}</div>
-            <div className="text-xs text-slate-500">Acertos</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-red-400">{incorrect}</div>
-            <div className="text-xs text-slate-500">Erros</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-blue-400">{accuracy}%</div>
-            <div className="text-xs text-slate-500">Precisão</div>
-          </div>
+      <div className="flex justify-center gap-12 mb-10">
+        <div>
+          <div className="text-3xl font-bold text-white tabular-nums">{correct}</div>
+          <div className="text-xs text-slate-600 mt-1">Acertos</div>
         </div>
+        <div>
+          <div className="text-3xl font-bold text-white tabular-nums">{incorrect}</div>
+          <div className="text-xs text-slate-600 mt-1">Erros</div>
+        </div>
+        <div>
+          <div className="text-3xl font-bold text-white tabular-nums">{accuracy}%</div>
+          <div className="text-xs text-slate-600 mt-1">Precisão</div>
+        </div>
+      </div>
 
-        <div className="flex flex-col gap-3">
-          {remaining > 0 && (
-            <button
-              onClick={onContinue}
-              className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-colors"
-            >
-              Continuar ({remaining} restantes)
-            </button>
-          )}
+      <div className="space-y-3">
+        {remaining > 0 && (
           <button
-            onClick={onBack}
-            className="w-full py-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl font-medium transition-colors"
+            onClick={onContinue}
+            className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-colors"
           >
-            Voltar pro menu
+            Continuar ({remaining} restantes)
           </button>
-        </div>
+        )}
+        <button
+          onClick={onBack}
+          className="w-full py-3 text-slate-500 hover:text-white text-sm transition-colors"
+        >
+          Voltar pro menu
+        </button>
       </div>
     </div>
   )

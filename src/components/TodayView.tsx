@@ -8,28 +8,27 @@ interface TodayViewProps {
 export default function TodayView({ dueCount, onStudy }: TodayViewProps) {
   if (dueCount === 0) {
     return (
-      <div className="w-full bg-green-900/20 border border-green-700/30 rounded-2xl p-5 mb-6 text-center">
-        <div className="text-2xl mb-1">✅</div>
-        <div className="text-green-400 font-medium">Tudo em dia!</div>
-        <div className="text-slate-500 text-sm">Próxima revisão amanhã</div>
+      <div className="mb-8 py-4 text-center">
+        <div className="text-green-400 text-sm font-medium">✓ Tudo em dia</div>
+        <div className="text-slate-600 text-xs mt-1">Próxima revisão amanhã</div>
       </div>
     )
   }
 
   return (
-    <div className="w-full bg-blue-900/20 border border-blue-700/30 rounded-2xl p-5 mb-6">
-      <div className="flex items-center justify-between">
+    <div className="mb-8">
+      <div className="flex items-center justify-between py-4">
         <div>
-          <div className="text-white font-medium">
-            📚 {dueCount} {dueCount === 1 ? 'card' : 'cards'} pra revisar
+          <div className="text-white text-sm font-medium">
+            {dueCount} {dueCount === 1 ? 'card' : 'cards'} pra revisar
           </div>
-          <div className="text-slate-500 text-sm">Estude agora e mantenha a memória fresca</div>
+          <div className="text-slate-600 text-xs mt-0.5">Mantenha a memória fresca</div>
         </div>
         <button
           onClick={onStudy}
-          className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium text-sm transition-colors whitespace-nowrap"
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-lg font-medium transition-colors"
         >
-          Estudar agora
+          Estudar
         </button>
       </div>
     </div>
