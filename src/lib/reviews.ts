@@ -8,6 +8,7 @@ export interface DueCard {
   front: string
   back: string
   deckId: string
+  deckTitle?: string
   stability: number
   difficulty: number
 }
@@ -16,6 +17,13 @@ export async function fetchDueCards(userId: string, deckId?: string): Promise<Du
   const today = new Date().toISOString().split('T')[0]
 
   if (deckId) {
+    // Get deck title
+    const { data: deckData } = await supabase
+      .from('decks')
+      .select('title')
+      .eq('id', deckId)
+      .single()
+
     const { data, error } = await supabase
       .from('cards')
       .select('id, front, back, deck_id, stability, difficulty, due_date')
@@ -30,6 +38,7 @@ export async function fetchDueCards(userId: string, deckId?: string): Promise<Du
       front: card.front,
       back: card.back,
       deckId: card.deck_id,
+      deckTitle: deckData?.title || '',
       stability: card.stability ?? 1.0,
       difficulty: card.difficulty ?? 0.5,
     }))
@@ -38,11 +47,12 @@ export async function fetchDueCards(userId: string, deckId?: string): Promise<Du
   // All decks for user
   const { data: userDecks } = await supabase
     .from('decks')
-    .select('id')
+    .select('id, title')
     .eq('user_id', userId)
 
   if (!userDecks || userDecks.length === 0) return []
   const deckIds = userDecks.map(d => d.id)
+  const deckTitles = Object.fromEntries(userDecks.map(d => [d.id, d.title]))
 
   const { data, error } = await supabase
     .from('cards')
@@ -58,6 +68,7 @@ export async function fetchDueCards(userId: string, deckId?: string): Promise<Du
     front: card.front,
     back: card.back,
     deckId: card.deck_id,
+    deckTitle: deckTitles[card.deck_id] || '',
     stability: card.stability ?? 1.0,
     difficulty: card.difficulty ?? 0.5,
   }))

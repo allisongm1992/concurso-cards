@@ -71,6 +71,11 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
 
       {/* Card */}
       <div className="min-h-[280px] flex flex-col items-center justify-center text-center px-6">
+        {currentCard.deckTitle && (
+          <div className="text-[11px] text-slate-600 mb-4">
+            {currentCard.deckTitle}
+          </div>
+        )}
         <div className="text-lg font-medium text-white leading-relaxed">
           {currentCard.front}
         </div>
