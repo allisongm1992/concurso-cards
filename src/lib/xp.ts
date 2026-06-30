@@ -15,8 +15,8 @@ interface FaixaConfig {
 }
 
 const FAIXAS: FaixaConfig[] = [
-  { name: 'Iniciante', color: 'text-slate-400', levels: 5, xpPerLevel: 200 },
-  { name: 'Estudante', color: 'text-blue-400', levels: 5, xpPerLevel: 400 },
+  { name: 'Iniciante', color: 'text-neutral-500', levels: 5, xpPerLevel: 200 },
+  { name: 'Estudante', color: 'text-emerald-400', levels: 5, xpPerLevel: 400 },
   { name: 'Dedicado', color: 'text-purple-400', levels: 5, xpPerLevel: 700 },
   { name: 'Aprovado', color: 'text-amber-400', levels: 5, xpPerLevel: 1000 },
   { name: 'Mestre', color: 'text-emerald-400', levels: 5, xpPerLevel: 1500 },

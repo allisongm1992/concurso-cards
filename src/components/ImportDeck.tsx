@@ -59,16 +59,16 @@ export default function ImportDeck({ onImport, onCancel }: ImportDeckProps) {
   }
 
   return (
-    <div className="w-full max-w-lg mx-auto px-4 py-6">
+    <div className="w-full max-w-lg mx-auto px-6 py-8">
       {/* Header */}
-      <div className="flex items-center mb-8">
+      <div className="flex items-center mb-10">
         <button
           onClick={onCancel}
-          className="text-sm text-slate-500 hover:text-white transition-colors"
+          className="text-sm text-neutral-600 hover:text-neutral-300 transition-colors cursor-pointer"
         >
           ← Voltar
         </button>
-        <div className="flex-1 text-center text-white font-medium">Importar Deck</div>
+        <div className="flex-1 text-center text-sm font-medium text-neutral-300">Importar</div>
         <div className="w-16" />
       </div>
 
@@ -77,10 +77,10 @@ export default function ImportDeck({ onImport, onCancel }: ImportDeckProps) {
         <div>
           <div
             onClick={() => fileRef.current?.click()}
-            className="border border-dashed border-slate-700 rounded-xl p-8 text-center cursor-pointer hover:border-slate-500 transition-colors"
+            className="border border-dashed border-neutral-800 rounded-lg p-10 text-center cursor-pointer hover:border-neutral-600 transition-colors"
           >
-            <div className="text-slate-400 text-sm mb-2">Toque para escolher arquivo</div>
-            <div className="text-slate-600 text-xs">CSV ou JSON</div>
+            <div className="text-neutral-400 text-sm">Toque para escolher arquivo</div>
+            <div className="text-neutral-700 text-xs mt-1">CSV ou JSON</div>
           </div>
           <input
             ref={fileRef}
@@ -91,15 +91,14 @@ export default function ImportDeck({ onImport, onCancel }: ImportDeckProps) {
           />
 
           {error && (
-            <div className="mt-4 text-red-400 text-xs bg-red-400/5 border border-red-400/10 p-3 rounded-lg">
+            <div className="mt-4 text-red-400 text-xs p-3 border border-red-900/30 rounded-lg">
               {error}
             </div>
           )}
 
-          <div className="mt-6 text-slate-600 text-xs space-y-2">
-            <p>Formatos aceitos:</p>
-            <p className="text-slate-500">CSV: front;back (uma linha por card)</p>
-            <p className="text-slate-500">JSON: {'{"cards": [{"front": "...", "back": "..."}]}'}</p>
+          <div className="mt-8 text-neutral-700 text-xs space-y-1">
+            <p>CSV: front;back (uma linha por card)</p>
+            <p>JSON: {'{"cards": [{"front": "...", "back": "..."}]}'}</p>
           </div>
         </div>
       )}
@@ -107,79 +106,69 @@ export default function ImportDeck({ onImport, onCancel }: ImportDeckProps) {
       {/* Preview + metadata */}
       {result?.deck && (
         <div className="space-y-4">
-          {/* Card count */}
-          <div className="text-sm text-green-400 mb-4">
+          <div className="text-sm text-emerald-500 mb-6">
             ✓ {result.deck.cards.length} cards encontrados
           </div>
 
-          {/* Title */}
-          <div>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Título do deck"
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
-            />
-          </div>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Título do deck"
+            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+          />
 
-          {/* Subject */}
-          <div>
-            <select
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
-            >
-              {SUBJECTS.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm focus:outline-none focus:border-emerald-600 transition-colors"
+          >
+            {SUBJECTS.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
 
-          {/* Description */}
-          <div>
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Descrição (opcional)"
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
-            />
-          </div>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Descrição (opcional)"
+            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+          />
 
           {/* Preview */}
-          <div className="mt-4">
-            <div className="text-xs text-slate-500 mb-2">Preview (primeiros 5 cards):</div>
+          <div className="mt-6">
+            <div className="text-[11px] text-neutral-700 uppercase tracking-wider mb-3">Preview</div>
             <div className="space-y-1">
               {result.deck.cards.slice(0, 5).map((card, i) => (
-                <div key={i} className="text-xs bg-slate-800/50 rounded-lg px-3 py-2">
-                  <span className="text-white">{card.front}</span>
-                  <span className="text-slate-600 mx-2">→</span>
-                  <span className="text-slate-400">{card.back.slice(0, 60)}{card.back.length > 60 ? '...' : ''}</span>
+                <div key={i} className="text-xs py-2 border-b border-neutral-900">
+                  <span className="text-neutral-300">{card.front}</span>
+                  <span className="text-neutral-800 mx-2">→</span>
+                  <span className="text-neutral-600">{card.back.slice(0, 50)}{card.back.length > 50 ? '...' : ''}</span>
                 </div>
               ))}
               {result.deck.cards.length > 5 && (
-                <div className="text-xs text-slate-600 px-3">
-                  ...e mais {result.deck.cards.length - 5} cards
+                <div className="text-[11px] text-neutral-700 pt-1">
+                  +{result.deck.cards.length - 5} mais
                 </div>
               )}
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3 mt-6">
+          <div className="flex gap-3 mt-8">
             <button
               onClick={() => { setResult(null); setError(null) }}
-              className="flex-1 py-3 text-slate-500 hover:text-white text-sm transition-colors"
+              className="flex-1 py-3 text-neutral-600 hover:text-neutral-300 text-sm transition-colors cursor-pointer"
             >
               Trocar arquivo
             </button>
             <button
               onClick={handleConfirm}
               disabled={!title.trim()}
-              className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium text-sm transition-colors disabled:opacity-50 cursor-pointer"
+              className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium text-sm transition-colors disabled:opacity-50 cursor-pointer"
             >
-              Importar {result.deck.cards.length} cards
+              Importar
             </button>
           </div>
         </div>

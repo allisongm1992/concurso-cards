@@ -48,7 +48,6 @@ export default function DeckEditor({ onSave, onCancel }: DeckEditorProps) {
     e.preventDefault()
     setError(null)
 
-    // Validações
     if (!title.trim()) {
       setError('Dê um título ao deck')
       return
@@ -69,89 +68,69 @@ export default function DeckEditor({ onSave, onCancel }: DeckEditorProps) {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">✏️ Novo Deck</h1>
+    <div className="w-full max-w-2xl mx-auto px-6 py-8">
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="text-2xl font-bold tracking-tight">Novo Deck</h1>
         <button
           onClick={onCancel}
-          className="text-slate-400 hover:text-white transition-colors"
+          className="text-sm text-neutral-600 hover:text-neutral-300 transition-colors cursor-pointer"
         >
-          ✕ Cancelar
+          Cancelar
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Info do deck */}
-        <div className="bg-slate-800 rounded-xl p-5 space-y-4">
-          <div>
-            <label htmlFor="title" className="block text-sm text-slate-400 mb-1">
-              Título
-            </label>
-            <input
-              id="title"
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Ex: Direitos Fundamentais - Art. 5º"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="subject" className="block text-sm text-slate-400 mb-1">
-              Matéria
-            </label>
-            <select
-              id="subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {SUBJECTS.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="description" className="block text-sm text-slate-400 mb-1">
-              Descrição (opcional)
-            </label>
-            <input
-              id="description"
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Ex: Incisos I ao X"
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Info */}
+        <div className="space-y-3">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+            placeholder="Título do deck"
+          />
+          <select
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm focus:outline-none focus:border-emerald-600 transition-colors"
+          >
+            {SUBJECTS.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+            placeholder="Descrição (opcional)"
+          />
         </div>
 
         {/* Cards */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Pares ({cards.length})</h2>
+            <span className="text-sm text-neutral-400">Pares ({cards.length})</span>
             <button
               type="button"
               onClick={addCard}
-              className="text-sm bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-lg transition-colors"
+              className="text-xs px-3 py-1.5 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
             >
-              + Adicionar par
+              + Adicionar
             </button>
           </div>
 
           {cards.map((card, index) => (
-            <div key={index} className="bg-slate-800 rounded-xl p-4 space-y-3">
+            <div key={index} className="border-b border-neutral-900 pb-3 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-slate-500">Par {index + 1}</span>
+                <span className="text-[11px] text-neutral-700">{index + 1}</span>
                 {cards.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeCard(index)}
-                    className="text-xs text-red-400 hover:text-red-300"
+                    className="text-[11px] text-neutral-700 hover:text-red-400 transition-colors cursor-pointer"
                   >
-                    Remover
+                    remover
                   </button>
                 )}
               </div>
@@ -159,32 +138,31 @@ export default function DeckEditor({ onSave, onCancel }: DeckEditorProps) {
                 type="text"
                 value={card.front}
                 onChange={(e) => updateCard(index, 'front', e.target.value)}
-                className="w-full px-3 py-2 bg-slate-700 rounded-lg text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Frente (pergunta/conceito)"
+                className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+                placeholder="Frente"
               />
               <input
                 type="text"
                 value={card.back}
                 onChange={(e) => updateCard(index, 'back', e.target.value)}
-                className="w-full px-3 py-2 bg-slate-700 rounded-lg text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Verso (resposta/definição)"
+                className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+                placeholder="Verso"
               />
             </div>
           ))}
         </div>
 
         {error && (
-          <div className="text-red-400 text-sm bg-red-400/10 p-3 rounded-xl">
+          <div className="text-red-400 text-xs p-3 border border-red-900/30 rounded-lg">
             {error}
           </div>
         )}
 
-        {/* Botão salvar */}
         <button
           type="submit"
-          className="w-full py-4 bg-green-600 hover:bg-green-700 rounded-xl font-semibold text-lg transition-colors"
+          className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 rounded-lg font-medium text-sm text-white transition-colors cursor-pointer"
         >
-          💾 Salvar Deck
+          Salvar Deck
         </button>
       </form>
     </div>
