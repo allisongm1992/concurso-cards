@@ -84,7 +84,14 @@ export default function Home() {
     if (!user) return
     const data = await checkAndUpdateStreak(user.id)
     setStreak(data)
-    setShowSplash(true)
+
+    // Only show splash once per day
+    const today = new Date().toISOString().split('T')[0]
+    const lastSplash = localStorage.getItem('streak-splash-date')
+    if (lastSplash !== today) {
+      setShowSplash(true)
+      localStorage.setItem('streak-splash-date', today)
+    }
   }
 
   const loadDueCount = async () => {
