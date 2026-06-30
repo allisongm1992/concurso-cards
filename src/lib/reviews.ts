@@ -119,8 +119,23 @@ export async function recordReview(
 }
 
 export async function getDueCount(userId: string): Promise<number> {
-  const cards = await fetchDueCards(userId)
-  return cards.length
+  const today = new Date().toISOString().split('T')[0]
+
+  const { data: userDecks } = await supabase
+    .from('decks')
+    .select('id')
+    .eq('user_id', userId)
+
+  if (!userDecks || userDecks.length === 0) return 0
+  const deckIds = userDecks.map(d => d.id)
+
+  const { count } = await supabase
+    .from('cards')
+    .select('id', { count: 'exact', head: true })
+    .in('deck_id', deckIds)
+    .or(`due_date.lte.${today},due_date.is.null`)
+
+  return count ?? 0
 }
 
 export async function getDueCountByDeck(

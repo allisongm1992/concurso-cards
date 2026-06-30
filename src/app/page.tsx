@@ -17,6 +17,7 @@ import ProfileScreen from '@/components/ProfileScreen'
 import MedalUnlock from '@/components/MedalUnlock'
 import { sampleDecks, DeckData, CardPair } from '@/data/sample-decks'
 import { fetchDecks, createDeck, seedSampleDecks, SyncedDeck } from '@/lib/sync'
+import { cacheDecksLocally, getCachedDecks } from '@/lib/offline-db'
 import { StreakData, checkAndUpdateStreak, recordDailyPlay } from '@/lib/streaks'
 import { fetchDueCards, getDueCount, DueCard } from '@/lib/reviews'
 import { calculateLevel, LevelInfo } from '@/lib/xp'
@@ -86,19 +87,36 @@ export default function Home() {
   const loadDecks = async () => {
     if (!user) return
     setSyncing(true)
-    await seedSampleDecks(user.id, sampleDecks)
-    const syncedDecks = await fetchDecks(user.id)
-    if (syncedDecks.length > 0) {
-      setDecks(
-        syncedDecks.map((d: SyncedDeck) => ({
+
+    try {
+      await seedSampleDecks(user.id, sampleDecks)
+      const syncedDecks = await fetchDecks(user.id)
+      if (syncedDecks.length > 0) {
+        const mapped = syncedDecks.map((d: SyncedDeck) => ({
           title: d.title,
           subject: d.subject,
           description: d.description || '',
           cards: d.cards,
           id: d.id,
         }))
-      )
+        setDecks(mapped)
+        // Cache for offline
+        await cacheDecksLocally(mapped)
+      }
+    } catch {
+      // Offline fallback — load from IndexedDB
+      const cached = await getCachedDecks()
+      if (cached.length > 0) {
+        setDecks(cached.map(d => ({
+          title: d.title,
+          subject: d.subject,
+          description: d.description,
+          cards: d.cards,
+          id: d.remoteId,
+        })))
+      }
     }
+
     setSyncing(false)
   }
 
