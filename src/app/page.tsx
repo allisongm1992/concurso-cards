@@ -23,6 +23,7 @@ import { calculateLevel, LevelInfo } from '@/lib/xp'
 import { MedalCheck, UnlockedMedal } from '@/lib/medals'
 import { getProgress, recordStudySession, recordDeckCreated, getUserMedals, UserProgress } from '@/lib/progress'
 import { getDailyGoal, setDailyGoalTarget, incrementDailyProgress, DailyGoal } from '@/lib/daily-goal'
+import { decodeDeckFromShare } from '@/lib/share'
 import DailyGoalBar from '@/components/DailyGoalBar'
 
 type GameState = 'login' | 'menu' | 'editor' | 'history' | 'studying' | 'study-progress' | 'profile' | 'importing'
@@ -53,6 +54,24 @@ export default function Home() {
   const [medals, setMedals] = useState<UnlockedMedal[]>([])
   const [medalToast, setMedalToast] = useState<MedalCheck | null>(null)
   const [dailyGoal, setDailyGoal] = useState<DailyGoal>(getDailyGoal())
+
+  // Check for shared deck in URL
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    const deckParam = params.get('deck')
+    if (deckParam) {
+      const shared = decodeDeckFromShare(deckParam)
+      if (shared) {
+        const confirmed = confirm(`Importar deck "${shared.title}" (${shared.cards.length} cards)?`)
+        if (confirmed) {
+          handleSaveDeck(shared)
+        }
+        // Clean URL
+        window.history.replaceState({}, '', window.location.pathname)
+      }
+    }
+  }, [])
 
   // Load everything on login
   useEffect(() => {

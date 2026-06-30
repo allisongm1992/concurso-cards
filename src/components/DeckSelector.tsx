@@ -2,6 +2,7 @@
 
 import { DeckData } from '@/data/sample-decks'
 import { exportDeckCSV } from '@/lib/deck-io'
+import { copyShareLink } from '@/lib/share'
 
 interface DeckSelectorProps {
   decks: (DeckData & { id?: string })[]
@@ -78,6 +79,15 @@ export default function DeckSelector({ decks, onSelect, onStudy, onReverse, onCr
                 className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors cursor-pointer"
               >
                 Reverso
+              </button>
+              <button
+                onClick={async () => {
+                  const ok = await copyShareLink(deck)
+                  if (ok) alert('Link copiado!')
+                }}
+                className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors cursor-pointer"
+              >
+                Compartilhar
               </button>
               <button
                 onClick={(e) => handleExport(e, deck)}
