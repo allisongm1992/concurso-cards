@@ -192,6 +192,23 @@ export default function Home() {
     setGameState('studying')
   }
 
+  const handleStudyDeck = (deck: DeckData & { id?: string }) => {
+    // Direct flashcard study — use all cards from the deck, no spaced repetition filter
+    const dueCards: DueCard[] = deck.cards.map((card, i) => ({
+      id: deck.id ? `${deck.id}-${i}` : `local-${i}`,
+      front: card.front,
+      back: card.back,
+      deckId: deck.id || 'local',
+      deckTitle: deck.title,
+      stability: 1.0,
+      difficulty: 0.5,
+    }))
+    setStudyCards(dueCards)
+    setStudyBatch(0)
+    setStudyResults({ correct: 0, incorrect: 0 })
+    setGameState('studying')
+  }
+
   const handleStudyComplete = async (results: { correct: number; incorrect: number }) => {
     setStudyResults(prev => ({
       correct: prev.correct + results.correct,
@@ -301,6 +318,7 @@ export default function Home() {
             <DeckSelector
               decks={decks}
               onSelect={handleDeckSelect}
+              onStudy={handleStudyDeck}
               onCreateNew={handleCreateNew}
               onImport={() => setGameState('importing')}
             />

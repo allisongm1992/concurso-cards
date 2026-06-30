@@ -6,6 +6,7 @@ import { exportDeckCSV } from '@/lib/deck-io'
 interface DeckSelectorProps {
   decks: (DeckData & { id?: string })[]
   onSelect: (deck: DeckData & { id?: string }) => void
+  onStudy: (deck: DeckData & { id?: string }) => void
   onCreateNew: () => void
   onImport: () => void
 }
@@ -21,7 +22,7 @@ const subjectDots: Record<string, string> = {
   'Legislação Específica': 'bg-indigo-500',
 }
 
-export default function DeckSelector({ decks, onSelect, onCreateNew, onImport }: DeckSelectorProps) {
+export default function DeckSelector({ decks, onSelect, onStudy, onCreateNew, onImport }: DeckSelectorProps) {
   const handleExport = (e: React.MouseEvent, deck: DeckData) => {
     e.stopPropagation()
     exportDeckCSV(deck)
@@ -68,6 +69,13 @@ export default function DeckSelector({ decks, onSelect, onCreateNew, onImport }:
               <div className="text-xs text-neutral-700 tabular-nums">
                 {deck.cards.length}
               </div>
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); onStudy(deck) }}
+              className="px-3 py-1.5 text-xs text-emerald-500 hover:text-emerald-400 transition-colors cursor-pointer"
+              title="Estudar (flashcard)"
+            >
+              Estudar
             </button>
             <button
               onClick={(e) => handleExport(e, deck)}
