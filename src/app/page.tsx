@@ -22,6 +22,8 @@ import { fetchDueCards, getDueCount, DueCard } from '@/lib/reviews'
 import { calculateLevel, LevelInfo } from '@/lib/xp'
 import { MedalCheck, UnlockedMedal } from '@/lib/medals'
 import { getProgress, recordStudySession, recordDeckCreated, getUserMedals, UserProgress } from '@/lib/progress'
+import { getDailyGoal, setDailyGoalTarget, incrementDailyProgress, DailyGoal } from '@/lib/daily-goal'
+import DailyGoalBar from '@/components/DailyGoalBar'
 
 type GameState = 'login' | 'menu' | 'editor' | 'history' | 'studying' | 'study-progress' | 'profile' | 'importing'
 
@@ -50,6 +52,7 @@ export default function Home() {
   const [progress, setProgress] = useState<UserProgress | null>(null)
   const [medals, setMedals] = useState<UnlockedMedal[]>([])
   const [medalToast, setMedalToast] = useState<MedalCheck | null>(null)
+  const [dailyGoal, setDailyGoal] = useState<DailyGoal>(getDailyGoal())
 
   // Load everything on login
   useEffect(() => {
@@ -179,6 +182,11 @@ export default function Home() {
     }))
     setGameState('study-progress')
 
+    // Update daily goal
+    const totalCards = results.correct + results.incorrect
+    const updatedGoal = incrementDailyProgress(totalCards)
+    setDailyGoal(updatedGoal)
+
     if (user) {
       const updatedStreak = await recordDailyPlay(user.id)
       setStreak(updatedStreak)
@@ -186,7 +194,7 @@ export default function Home() {
       const xpEarned = results.correct * 15 + results.incorrect * 5
       const { progress: prog, newMedals } = await recordStudySession(
         user.id,
-        results.correct + results.incorrect,
+        totalCards,
         results.correct,
         xpEarned
       )
@@ -269,6 +277,19 @@ export default function Home() {
 
         {gameState === 'menu' && (
           <div className="w-full max-w-2xl mx-auto px-4">
+            <DailyGoalBar
+              goal={dailyGoal}
+              onChangeTarget={() => {
+                const input = prompt('Meta diária (cards):', String(dailyGoal.target))
+                if (input) {
+                  const n = parseInt(input, 10)
+                  if (n > 0) {
+                    setDailyGoalTarget(n)
+                    setDailyGoal({ ...dailyGoal, target: n })
+                  }
+                }
+              }}
+            />
             <TodayView dueCount={dueCount} onStudy={() => handleStartStudy()} />
             <DeckSelector
               decks={decks}
