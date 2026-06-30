@@ -47,13 +47,15 @@ h1, h2, h3 {
 }
 
 .card-front {
-  background: linear-gradient(135deg, #1e40af, #3b82f6);
-  color: white;
+  background: #171717;
+  border: 1px solid #262626;
+  color: #a3a3a3;
 }
 
 .card-back {
-  background: white;
-  color: #1e293b;
+  background: #0a0a0a;
+  border: 1px solid #10b981;
+  color: #e5e5e5;
   transform: rotateY(180deg);
 }
 

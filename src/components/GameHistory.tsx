@@ -57,60 +57,59 @@ export default function GameHistory({ userId, onBack }: GameHistoryProps) {
     : 0
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">📊 Histórico</h1>
+    <div className="w-full max-w-2xl mx-auto px-6 py-8">
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="text-2xl font-bold tracking-tight">Histórico</h1>
         <button
           onClick={onBack}
-          className="text-slate-400 hover:text-white transition-colors"
+          className="text-sm text-neutral-600 hover:text-neutral-300 transition-colors cursor-pointer"
         >
           ← Voltar
         </button>
       </div>
 
-      {/* Resumo */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="bg-slate-800 rounded-xl p-4 text-center">
-          <div className="text-2xl font-bold text-blue-400">{totalGames}</div>
-          <div className="text-xs text-slate-400">Partidas</div>
+      {/* Stats */}
+      <div className="flex gap-12 mb-10">
+        <div>
+          <div className="text-2xl font-bold tabular-nums">{totalGames}</div>
+          <div className="text-xs text-neutral-600">Partidas</div>
         </div>
-        <div className="bg-slate-800 rounded-xl p-4 text-center">
-          <div className="text-2xl font-bold text-green-400">{avgScore}</div>
-          <div className="text-xs text-slate-400">Média</div>
+        <div>
+          <div className="text-2xl font-bold tabular-nums">{avgScore}</div>
+          <div className="text-xs text-neutral-600">Média</div>
         </div>
-        <div className="bg-slate-800 rounded-xl p-4 text-center">
-          <div className="text-2xl font-bold text-amber-400">{bestScore}</div>
-          <div className="text-xs text-slate-400">Recorde</div>
+        <div>
+          <div className="text-2xl font-bold tabular-nums">{bestScore}</div>
+          <div className="text-xs text-neutral-600">Recorde</div>
         </div>
       </div>
 
-      {/* Lista de partidas */}
+      {/* List */}
       {loading ? (
-        <div className="text-center text-slate-400 py-8">Carregando...</div>
+        <div className="text-neutral-600 text-sm py-8">Carregando...</div>
       ) : history.length === 0 ? (
-        <div className="text-center text-slate-500 py-8">
-          <p className="text-4xl mb-3">🎮</p>
-          <p>Nenhuma partida ainda. Jogue para ver seu histórico!</p>
+        <div className="text-neutral-700 text-sm py-8">
+          Nenhuma partida ainda.
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="border-t border-neutral-900">
           {history.map((record) => (
             <div
               key={record.id}
-              className="bg-slate-800 rounded-xl p-4 flex justify-between items-center"
+              className="flex justify-between items-center py-4 border-b border-neutral-900"
             >
               <div>
-                <div className="font-semibold text-sm">
+                <div className="text-sm text-neutral-200">
                   {record.decks?.title || 'Deck removido'}
                 </div>
-                <div className="text-xs text-slate-500 mt-1">
-                  {record.decks?.subject} • {formatDate(record.played_at)}
+                <div className="text-xs text-neutral-700 mt-0.5">
+                  {formatDate(record.played_at)}
                 </div>
               </div>
               <div className="text-right">
-                <div className="font-bold text-blue-400">{record.score} pts</div>
-                <div className="text-xs text-slate-500">
-                  {formatTime(record.time_seconds)} • {record.total_pairs} pares
+                <div className="text-sm font-medium tabular-nums">{record.score}</div>
+                <div className="text-xs text-neutral-700 tabular-nums">
+                  {formatTime(record.time_seconds)}
                 </div>
               </div>
             </div>

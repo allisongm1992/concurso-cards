@@ -36,7 +36,6 @@ export default function GameBoard({ cards, onGameEnd, onBack }: GameBoardProps) 
   const [isRunning, setIsRunning] = useState(false)
   const [wrongPair, setWrongPair] = useState<number[]>([])
 
-  // Inicializar tabuleiro
   useEffect(() => {
     const gameCardsList: GameCard[] = []
     cards.forEach((card, index) => {
@@ -61,7 +60,6 @@ export default function GameBoard({ cards, onGameEnd, onBack }: GameBoardProps) 
     setIsRunning(true)
   }, [cards])
 
-  // Timer
   useEffect(() => {
     let interval: NodeJS.Timeout
     if (isRunning) {
@@ -72,7 +70,6 @@ export default function GameBoard({ cards, onGameEnd, onBack }: GameBoardProps) 
     return () => clearInterval(interval)
   }, [isRunning])
 
-  // Checar match
   useEffect(() => {
     if (selectedCards.length === 2) {
       const [first, second] = selectedCards
@@ -80,7 +77,6 @@ export default function GameBoard({ cards, onGameEnd, onBack }: GameBoardProps) 
       const secondCard = gameCards.find((c) => c.id === second)
 
       if (firstCard && secondCard && firstCard.pairId === secondCard.pairId) {
-        // Match!
         setTimeout(() => {
           setGameCards((prev) =>
             prev.map((c) =>
@@ -91,7 +87,6 @@ export default function GameBoard({ cards, onGameEnd, onBack }: GameBoardProps) 
           setSelectedCards([])
         }, 500)
       } else {
-        // Errou
         setWrongPair(selectedCards)
         setTimeout(() => {
           setGameCards((prev) =>
@@ -107,7 +102,6 @@ export default function GameBoard({ cards, onGameEnd, onBack }: GameBoardProps) 
     }
   }, [selectedCards, gameCards])
 
-  // Fim do jogo
   useEffect(() => {
     if (matches === cards.length && matches > 0) {
       setIsRunning(false)
@@ -139,44 +133,37 @@ export default function GameBoard({ cards, onGameEnd, onBack }: GameBoardProps) 
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-6">
-      {/* Header com stats */}
-      <div className="flex justify-between items-center mb-6 bg-slate-800 rounded-xl p-4">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8 px-1">
         <button
           onClick={onBack}
-          className="text-slate-400 hover:text-white transition-colors"
+          className="text-sm text-neutral-600 hover:text-neutral-300 transition-colors cursor-pointer"
           aria-label="Voltar"
         >
           ← Voltar
         </button>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-blue-400">{formatTime(timer)}</div>
-          <div className="text-xs text-slate-400">Tempo</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-green-400">{matches}/{cards.length}</div>
-          <div className="text-xs text-slate-400">Pares</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-amber-400">{attempts}</div>
-          <div className="text-xs text-slate-400">Tentativas</div>
+        <div className="flex items-center gap-6 text-xs text-neutral-500 tabular-nums">
+          <span>{formatTime(timer)}</span>
+          <span className="text-emerald-500">{matches}/{cards.length}</span>
+          <span>{attempts} tent.</span>
         </div>
       </div>
 
-      {/* Grid de cartas */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+      {/* Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
         {gameCards.map((card) => (
           <button
             key={card.id}
             onClick={() => handleCardClick(card.id)}
             disabled={card.isFlipped || card.isMatched}
-            className={`card-flip aspect-[3/4] ${
+            className={`card-flip aspect-[3/4] cursor-pointer ${
               card.isMatched ? 'card-matched' : ''
             } ${wrongPair.includes(card.id) ? 'card-wrong' : ''}`}
             aria-label={card.isFlipped ? card.text : 'Carta virada'}
           >
             <div className={`card-inner ${card.isFlipped || card.isMatched ? 'flipped' : ''}`}>
               <div className="card-front">
-                <span className="text-3xl">?</span>
+                <span className="text-2xl">?</span>
               </div>
               <div className="card-back">
                 <span className="text-xs sm:text-sm leading-tight">{card.text}</span>
