@@ -1,4 +1,4 @@
-const CACHE_NAME = 'concurso-cards-v1'
+const CACHE_NAME = 'concurso-cards-v2'
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
