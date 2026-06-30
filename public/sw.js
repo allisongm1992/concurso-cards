@@ -1,8 +1,20 @@
-const CACHE_NAME = 'concurso-cards-v2'
+const CACHE_NAME = 'concurso-cards-v3'
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
 ]
+
+// URLs that should never be cached
+const NO_CACHE_PATTERNS = [
+  '/auth/',
+  '/rest/',
+  'supabase.co',
+  'googleapis.com/token',
+]
+
+function shouldCache(url) {
+  return !NO_CACHE_PATTERNS.some(pattern => url.includes(pattern))
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -23,7 +35,15 @@ self.addEventListener('activate', (event) => {
 })
 
 self.addEventListener('fetch', (event) => {
-  // Network first, fallback to cache
+  const url = event.request.url
+
+  // Skip caching for auth/API requests
+  if (!shouldCache(url)) {
+    event.respondWith(fetch(event.request))
+    return
+  }
+
+  // Network first, fallback to cache for safe URLs
   event.respondWith(
     fetch(event.request)
       .then((response) => {

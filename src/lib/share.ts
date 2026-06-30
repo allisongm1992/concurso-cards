@@ -12,14 +12,24 @@ export function encodeDeckForShare(deck: DeckData): string {
 // Decode shared deck from base64
 export function decodeDeckFromShare(encoded: string): DeckData | null {
   try {
+    // Limit payload size (max ~200KB encoded = ~150KB decoded)
+    if (encoded.length > 200000) return null
+
     const json = decodeURIComponent(escape(atob(encoded)))
     const data = JSON.parse(json)
     if (data.cards && Array.isArray(data.cards) && data.cards.length > 0) {
+      // Max 100 cards via share link
+      const cards = data.cards
+        .filter((c: { front?: string; back?: string }) => c.front && c.back)
+        .slice(0, 100)
+
+      if (cards.length === 0) return null
+
       return {
-        title: data.title || 'Deck compartilhado',
-        subject: data.subject || 'Outro',
-        description: data.description || '',
-        cards: data.cards.filter((c: { front?: string; back?: string }) => c.front && c.back),
+        title: (data.title || 'Deck compartilhado').slice(0, 200),
+        subject: (data.subject || 'Outro').slice(0, 100),
+        description: (data.description || '').slice(0, 500),
+        cards,
       }
     }
     return null

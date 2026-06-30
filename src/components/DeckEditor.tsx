@@ -85,7 +85,8 @@ export default function DeckEditor({ onSave, onCancel }: DeckEditorProps) {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value.slice(0, 200))}
+            maxLength={200}
             className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
             placeholder="Título do deck"
           />
@@ -101,7 +102,8 @@ export default function DeckEditor({ onSave, onCancel }: DeckEditorProps) {
           <input
             type="text"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value.slice(0, 500))}
+            maxLength={500}
             className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
             placeholder="Descrição (opcional)"
           />
@@ -140,6 +142,7 @@ export default function DeckEditor({ onSave, onCancel }: DeckEditorProps) {
                 onChange={(e) => updateCard(index, 'front', e.target.value)}
                 className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
                 placeholder="Frente"
+                maxLength={2000}
               />
               <input
                 type="text"
@@ -147,6 +150,7 @@ export default function DeckEditor({ onSave, onCancel }: DeckEditorProps) {
                 onChange={(e) => updateCard(index, 'back', e.target.value)}
                 className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
                 placeholder="Verso"
+                maxLength={2000}
               />
             </div>
           ))}

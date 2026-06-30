@@ -28,6 +28,12 @@ export default function ImportDeck({ onImport, onCancel }: ImportDeckProps) {
     if (!file) return
 
     setError(null)
+    // File size limit: 5MB
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Arquivo muito grande (máx 5MB).')
+      return
+    }
+
     const reader = new FileReader()
     reader.onload = (event) => {
       const content = event.target?.result as string
@@ -35,6 +41,13 @@ export default function ImportDeck({ onImport, onCancel }: ImportDeckProps) {
 
       if (!parsed.success) {
         setError(parsed.error || 'Erro ao ler arquivo.')
+        setResult(null)
+        return
+      }
+
+      // Max 500 cards per import
+      if (parsed.deck && parsed.deck.cards.length > 500) {
+        setError(`Limite de 500 cards por import (arquivo tem ${parsed.deck.cards.length}).`)
         setResult(null)
         return
       }
