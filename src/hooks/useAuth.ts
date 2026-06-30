@@ -9,13 +9,13 @@ export function useAuth() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Verificar sessão atual
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user)
+    // Check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
       setLoading(false)
     })
 
-    // Escutar mudanças de auth
+    // Listen for auth changes (including OAuth redirects)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null)
