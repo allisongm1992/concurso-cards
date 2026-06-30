@@ -9,10 +9,6 @@ interface ReviewResult {
 const DECAY = -0.5
 const FACTOR = 0.9
 
-export function getInitialParams() {
-  return { stability: 1.0, difficulty: 0.5 }
-}
-
 export function calculateNextReview(
   stability: number,
   difficulty: number,

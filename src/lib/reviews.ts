@@ -138,32 +138,3 @@ export async function getDueCount(userId: string): Promise<number> {
   return count ?? 0
 }
 
-export async function getDueCountByDeck(
-  userId: string
-): Promise<{ deckId: string; deckTitle: string; count: number }[]> {
-  const { data: decks } = await supabase
-    .from('decks')
-    .select('id, title')
-    .eq('user_id', userId)
-
-  if (!decks) return []
-
-  const today = new Date().toISOString().split('T')[0]
-  const results: { deckId: string; deckTitle: string; count: number }[] = []
-
-  for (const deck of decks) {
-    const { count } = await supabase
-      .from('cards')
-      .select('id', { count: 'exact', head: true })
-      .eq('deck_id', deck.id)
-      .or(`due_date.lte.${today},due_date.is.null`)
-
-    results.push({
-      deckId: deck.id,
-      deckTitle: deck.title,
-      count: count ?? 0,
-    })
-  }
-
-  return results
-}

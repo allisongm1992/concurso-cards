@@ -92,40 +92,6 @@ export async function deleteDeck(deckId: string): Promise<boolean> {
   return !error
 }
 
-// Salvar resultado de partida
-export async function saveGameSession(
-  userId: string,
-  deckId: string,
-  score: number,
-  totalPairs: number,
-  timeSeconds: number
-): Promise<boolean> {
-  const { error } = await supabase
-    .from('game_sessions')
-    .insert({
-      user_id: userId,
-      deck_id: deckId,
-      score,
-      total_pairs: totalPairs,
-      time_seconds: timeSeconds,
-    })
-
-  return !error
-}
-
-// Buscar histórico de partidas
-export async function fetchGameHistory(userId: string) {
-  const { data, error } = await supabase
-    .from('game_sessions')
-    .select('*, decks(title, subject)')
-    .eq('user_id', userId)
-    .order('played_at', { ascending: false })
-    .limit(20)
-
-  if (error) return []
-  return data
-}
-
 // Seed: salvar decks de exemplo no Supabase pra um usuário novo
 export async function seedSampleDecks(
   userId: string,

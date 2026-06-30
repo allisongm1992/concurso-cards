@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/useAuth'
 import AuthForm from '@/components/AuthForm'
 import DeckSelector from '@/components/DeckSelector'
 import DeckEditor from '@/components/DeckEditor'
-import GameHistory from '@/components/GameHistory'
 import StreakSplash from '@/components/StreakSplash'
 import StreakBadge from '@/components/StreakBadge'
 import TodayView from '@/components/TodayView'
@@ -17,6 +16,7 @@ import ProfileScreen from '@/components/ProfileScreen'
 import MedalUnlock from '@/components/MedalUnlock'
 import { sampleDecks, DeckData, CardPair } from '@/data/sample-decks'
 import { fetchDecks, createDeck, seedSampleDecks, SyncedDeck } from '@/lib/sync'
+
 import { cacheDecksLocally, getCachedDecks } from '@/lib/offline-db'
 import { StreakData, checkAndUpdateStreak, recordDailyPlay } from '@/lib/streaks'
 import { fetchDueCards, getDueCount, DueCard } from '@/lib/reviews'
@@ -27,7 +27,7 @@ import { getDailyGoal, setDailyGoalTarget, incrementDailyProgress, DailyGoal } f
 import { decodeDeckFromShare } from '@/lib/share'
 import DailyGoalBar from '@/components/DailyGoalBar'
 
-type GameState = 'login' | 'menu' | 'editor' | 'history' | 'studying' | 'study-progress' | 'profile' | 'importing'
+type GameState = 'login' | 'menu' | 'editor' | 'studying' | 'study-progress' | 'profile' | 'importing'
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array]
@@ -286,14 +286,6 @@ export default function Home() {
             )}
           </div>
           <div className="flex items-center gap-4">
-            {user && gameState === 'menu' && (
-              <button
-                onClick={() => setGameState('history')}
-                className="text-xs text-neutral-700 hover:text-neutral-400 transition-colors cursor-pointer"
-              >
-                Histórico
-              </button>
-            )}
             {user && (
               <button
                 onClick={handleSignOut}
@@ -350,13 +342,6 @@ export default function Home() {
           <ImportDeck
             onImport={handleSaveDeck}
             onCancel={handleBackToMenu}
-          />
-        )}
-
-        {gameState === 'history' && user && (
-          <GameHistory
-            userId={user.id}
-            onBack={handleBackToMenu}
           />
         )}
 
