@@ -16,6 +16,7 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
   const [correct, setCorrect] = useState(0)
   const [incorrect, setIncorrect] = useState(0)
   const [transitioning, setTransitioning] = useState(false)
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null)
 
   const currentCard = cards[currentIndex]
 
@@ -27,7 +28,15 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
     if (transitioning) return
     setTransitioning(true)
 
-    await recordReview(userId, currentCard.id, currentCard.deckId, rating)
+    // Haptic feedback on error
+    if (rating === 'again' && navigator.vibrate) {
+      navigator.vibrate(50)
+    }
+
+    // Record review only if user is logged in and card has a real ID
+    if (userId && !currentCard.id.startsWith('local-')) {
+      await recordReview(userId, currentCard.id, currentCard.deckId, rating)
+    }
 
     const newCorrect = rating === 'good' ? correct + 1 : correct
     const newIncorrect = rating === 'again' ? incorrect + 1 : incorrect
@@ -38,16 +47,22 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
       setIncorrect(newIncorrect)
     }
 
-    const nextIndex = currentIndex + 1
+    // Slide animation
+    setSlideDirection(rating === 'good' ? 'left' : 'right')
 
-    if (nextIndex >= cards.length) {
-      onComplete({ correct: newCorrect, incorrect: newIncorrect })
-    } else {
-      setCurrentIndex(nextIndex)
-      setRevealed(false)
-    }
+    setTimeout(() => {
+      const nextIndex = currentIndex + 1
 
-    setTransitioning(false)
+      if (nextIndex >= cards.length) {
+        onComplete({ correct: newCorrect, incorrect: newIncorrect })
+      } else {
+        setCurrentIndex(nextIndex)
+        setRevealed(false)
+        setSlideDirection(null)
+      }
+
+      setTransitioning(false)
+    }, 200)
   }, [currentIndex, cards, userId, currentCard, correct, incorrect, transitioning, onComplete])
 
   if (!currentCard) return null
@@ -70,7 +85,13 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
       </div>
 
       {/* Card */}
-      <div className="min-h-[320px] flex flex-col items-center justify-center text-center">
+      <div
+        className={`min-h-[320px] flex flex-col items-center justify-center text-center transition-all duration-200 ${
+          slideDirection === 'left' ? 'opacity-0 -translate-x-4' :
+          slideDirection === 'right' ? 'opacity-0 translate-x-4' :
+          'opacity-100 translate-x-0'
+        }`}
+      >
         {currentCard.deckTitle && (
           <div className="text-[11px] text-neutral-700 uppercase tracking-wider mb-6">
             {currentCard.deckTitle}

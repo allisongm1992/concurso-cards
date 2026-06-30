@@ -1,12 +1,10 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import AuthForm from '@/components/AuthForm'
 import DeckSelector from '@/components/DeckSelector'
 import DeckEditor from '@/components/DeckEditor'
-import GameBoard from '@/components/GameBoard'
-import GameResult from '@/components/GameResult'
 import GameHistory from '@/components/GameHistory'
 import StreakSplash from '@/components/StreakSplash'
 import StreakBadge from '@/components/StreakBadge'
@@ -18,22 +16,27 @@ import XpBadge from '@/components/XpBadge'
 import ProfileScreen from '@/components/ProfileScreen'
 import MedalUnlock from '@/components/MedalUnlock'
 import { sampleDecks, DeckData, CardPair } from '@/data/sample-decks'
-import { fetchDecks, createDeck, seedSampleDecks, saveGameSession, SyncedDeck } from '@/lib/sync'
+import { fetchDecks, createDeck, seedSampleDecks, SyncedDeck } from '@/lib/sync'
 import { StreakData, checkAndUpdateStreak, recordDailyPlay } from '@/lib/streaks'
 import { fetchDueCards, getDueCount, DueCard } from '@/lib/reviews'
-import { calculateLevel, LevelInfo, getXpForMatchingGame, getXpForStreak } from '@/lib/xp'
+import { calculateLevel, LevelInfo } from '@/lib/xp'
 import { MedalCheck, UnlockedMedal } from '@/lib/medals'
-import { getProgress, recordStudySession, recordMatchingGame, recordDeckCreated, getUserMedals, UserProgress } from '@/lib/progress'
+import { getProgress, recordStudySession, recordDeckCreated, getUserMedals, UserProgress } from '@/lib/progress'
 
-type GameState = 'login' | 'menu' | 'editor' | 'playing' | 'result' | 'history' | 'studying' | 'study-progress' | 'profile' | 'importing'
+type GameState = 'login' | 'menu' | 'editor' | 'history' | 'studying' | 'study-progress' | 'profile' | 'importing'
+
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
 
 export default function Home() {
   const { user, loading, signOut } = useAuth()
   const [gameState, setGameState] = useState<GameState>('login')
-  const [selectedDeck, setSelectedDeck] = useState<DeckData | null>(null)
-  const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null)
-  const [lastScore, setLastScore] = useState(0)
-  const [lastTime, setLastTime] = useState(0)
   const [decks, setDecks] = useState<(DeckData & { id?: string })[]>(sampleDecks)
   const [syncing, setSyncing] = useState(false)
   const [streak, setStreak] = useState<StreakData | null>(null)
@@ -42,6 +45,7 @@ export default function Home() {
   const [studyCards, setStudyCards] = useState<DueCard[]>([])
   const [studyResults, setStudyResults] = useState({ correct: 0, incorrect: 0 })
   const [studyBatch, setStudyBatch] = useState(0)
+  const [studyReversed, setStudyReversed] = useState(false)
   const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null)
   const [progress, setProgress] = useState<UserProgress | null>(null)
   const [medals, setMedals] = useState<UnlockedMedal[]>([])
@@ -60,11 +64,8 @@ export default function Home() {
   const loadDecks = async () => {
     if (!user) return
     setSyncing(true)
-
     await seedSampleDecks(user.id, sampleDecks)
-
     const syncedDecks = await fetchDecks(user.id)
-
     if (syncedDecks.length > 0) {
       setDecks(
         syncedDecks.map((d: SyncedDeck) => ({
@@ -76,7 +77,6 @@ export default function Home() {
         }))
       )
     }
-
     setSyncing(false)
   }
 
@@ -84,8 +84,6 @@ export default function Home() {
     if (!user) return
     const data = await checkAndUpdateStreak(user.id)
     setStreak(data)
-
-    // Only show splash once per day
     const today = new Date().toISOString().split('T')[0]
     const lastSplash = localStorage.getItem('streak-splash-date')
     if (lastSplash !== today) {
@@ -126,12 +124,6 @@ export default function Home() {
     setGameState('menu')
   }
 
-  const handleDeckSelect = (deck: DeckData & { id?: string }) => {
-    setSelectedDeck(deck)
-    setSelectedDeckId(deck.id || null)
-    setGameState('playing')
-  }
-
   const handleCreateNew = () => {
     setGameState('editor')
   }
@@ -152,67 +144,31 @@ export default function Home() {
     setGameState('menu')
   }
 
-  const handleGameEnd = useCallback(
-    async (score: number, time: number) => {
-      setLastScore(score)
-      setLastTime(time)
-      setGameState('result')
-
-      if (user && selectedDeckId) {
-        await saveGameSession(
-          user.id,
-          selectedDeckId,
-          score,
-          selectedDeck?.cards.length || 0,
-          time
-        )
-
-        // Update streak
-        const updatedStreak = await recordDailyPlay(user.id)
-        setStreak(updatedStreak)
-
-        // XP for matching game
-        const matches = selectedDeck?.cards.length || 0
-        const attempts = matches > 0 ? Math.round(matches / (score / 1000 + 1)) : matches
-        const xp = getXpForMatchingGame(matches, attempts)
-        const { progress: prog, newMedals } = await recordMatchingGame(user.id, xp, time)
-        setProgress(prog)
-        setLevelInfo(calculateLevel(prog.totalXp))
-        showMedalToast(newMedals)
-
-        // XP for streak
-        if (!updatedStreak.playedToday) {
-          // Already handled in recordDailyPlay logic
-        }
-      }
-    },
-    [user, selectedDeckId, selectedDeck]
-  )
-
   const handleStartStudy = async (deckId?: string) => {
     if (!user) return
     const cards = await fetchDueCards(user.id, deckId)
     if (cards.length === 0) return
-    setStudyCards(cards)
+    setStudyCards(shuffleArray(cards))
     setStudyBatch(0)
     setStudyResults({ correct: 0, incorrect: 0 })
+    setStudyReversed(false)
     setGameState('studying')
   }
 
-  const handleStudyDeck = (deck: DeckData & { id?: string }) => {
-    // Direct flashcard study — use all cards from the deck, no spaced repetition filter
+  const handleStudyDeck = (deck: DeckData & { id?: string }, reversed = false) => {
     const dueCards: DueCard[] = deck.cards.map((card, i) => ({
       id: deck.id ? `${deck.id}-${i}` : `local-${i}`,
-      front: card.front,
-      back: card.back,
+      front: reversed ? card.back : card.front,
+      back: reversed ? card.front : card.back,
       deckId: deck.id || 'local',
       deckTitle: deck.title,
       stability: 1.0,
       difficulty: 0.5,
     }))
-    setStudyCards(dueCards)
+    setStudyCards(shuffleArray(dueCards))
     setStudyBatch(0)
     setStudyResults({ correct: 0, incorrect: 0 })
+    setStudyReversed(reversed)
     setGameState('studying')
   }
 
@@ -224,11 +180,9 @@ export default function Home() {
     setGameState('study-progress')
 
     if (user) {
-      // Update streak
       const updatedStreak = await recordDailyPlay(user.id)
       setStreak(updatedStreak)
 
-      // XP for study session
       const xpEarned = results.correct * 15 + results.incorrect * 5
       const { progress: prog, newMedals } = await recordStudySession(
         user.id,
@@ -247,13 +201,7 @@ export default function Home() {
     setGameState('studying')
   }
 
-  const handlePlayAgain = () => {
-    setGameState('playing')
-  }
-
   const handleBackToMenu = () => {
-    setSelectedDeck(null)
-    setSelectedDeckId(null)
     setGameState('menu')
     if (user) {
       loadDueCount()
@@ -324,8 +272,9 @@ export default function Home() {
             <TodayView dueCount={dueCount} onStudy={() => handleStartStudy()} />
             <DeckSelector
               decks={decks}
-              onSelect={handleDeckSelect}
-              onStudy={handleStudyDeck}
+              onSelect={(deck) => handleStudyDeck(deck)}
+              onStudy={(deck) => handleStudyDeck(deck)}
+              onReverse={(deck) => handleStudyDeck(deck, true)}
               onCreateNew={handleCreateNew}
               onImport={() => setGameState('importing')}
             />
@@ -353,28 +302,10 @@ export default function Home() {
           />
         )}
 
-        {gameState === 'playing' && selectedDeck && (
-          <GameBoard
-            cards={selectedDeck.cards}
-            onGameEnd={handleGameEnd}
-            onBack={handleBackToMenu}
-          />
-        )}
-
-        {gameState === 'result' && selectedDeck && (
-          <GameResult
-            score={lastScore}
-            time={lastTime}
-            totalPairs={selectedDeck.cards.length}
-            onPlayAgain={handlePlayAgain}
-            onBack={handleBackToMenu}
-          />
-        )}
-
-        {gameState === 'studying' && user && studyCards.length > 0 && (
+        {gameState === 'studying' && studyCards.length > 0 && (
           <StudyMode
             cards={studyCards.slice(studyBatch * 20, (studyBatch + 1) * 20)}
-            userId={user.id}
+            userId={user?.id || ''}
             onComplete={handleStudyComplete}
             onBack={handleBackToMenu}
           />

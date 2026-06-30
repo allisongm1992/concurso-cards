@@ -7,6 +7,7 @@ interface DeckSelectorProps {
   decks: (DeckData & { id?: string })[]
   onSelect: (deck: DeckData & { id?: string }) => void
   onStudy: (deck: DeckData & { id?: string }) => void
+  onReverse: (deck: DeckData & { id?: string }) => void
   onCreateNew: () => void
   onImport: () => void
 }
@@ -22,7 +23,7 @@ const subjectDots: Record<string, string> = {
   'Legislação Específica': 'bg-indigo-500',
 }
 
-export default function DeckSelector({ decks, onSelect, onStudy, onCreateNew, onImport }: DeckSelectorProps) {
+export default function DeckSelector({ decks, onSelect, onStudy, onReverse, onCreateNew, onImport }: DeckSelectorProps) {
   const handleExport = (e: React.MouseEvent, deck: DeckData) => {
     e.stopPropagation()
     exportDeckCSV(deck)
@@ -55,37 +56,36 @@ export default function DeckSelector({ decks, onSelect, onStudy, onCreateNew, on
         {decks.map((deck, index) => (
           <div
             key={index}
-            className="flex items-center border-b border-neutral-900 group"
+            className="border-b border-neutral-900 py-4 group"
           >
-            <button
-              onClick={() => onSelect(deck)}
-              className="flex-1 flex items-center gap-3 py-4 text-left hover:pl-1 transition-all cursor-pointer"
-            >
+            <div className="flex items-center gap-3">
               <div className={`w-1.5 h-1.5 rounded-full ${subjectDots[deck.subject] || 'bg-neutral-600'}`} />
               <div className="flex-1 min-w-0">
                 <div className="text-sm text-neutral-100 truncate">{deck.title}</div>
-                <div className="text-xs text-neutral-600 truncate">{deck.subject}</div>
+                <div className="text-xs text-neutral-600 truncate">{deck.subject} · {deck.cards.length} cards</div>
               </div>
-              <div className="text-xs text-neutral-700 tabular-nums">
-                {deck.cards.length}
-              </div>
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); onStudy(deck) }}
-              className="px-3 py-1.5 text-xs text-emerald-500 hover:text-emerald-400 transition-colors cursor-pointer"
-              title="Estudar (flashcard)"
-            >
-              Estudar
-            </button>
-            <button
-              onClick={(e) => handleExport(e, deck)}
-              className="p-3 text-neutral-800 hover:text-neutral-400 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
-              title="Exportar CSV"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-              </svg>
-            </button>
+            </div>
+            {/* Actions row */}
+            <div className="flex items-center gap-3 mt-2 ml-4">
+              <button
+                onClick={() => onStudy(deck)}
+                className="text-xs text-emerald-500 hover:text-emerald-400 transition-colors cursor-pointer"
+              >
+                Estudar
+              </button>
+              <button
+                onClick={() => onReverse(deck)}
+                className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors cursor-pointer"
+              >
+                Reverso
+              </button>
+              <button
+                onClick={(e) => handleExport(e, deck)}
+                className="text-xs text-neutral-700 hover:text-neutral-400 transition-colors cursor-pointer opacity-0 group-hover:opacity-100"
+              >
+                Exportar
+              </button>
+            </div>
           </div>
         ))}
       </div>
