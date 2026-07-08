@@ -192,13 +192,16 @@ export default function Home() {
 
   const handleStartStudy = async (deckId?: string) => {
     if (!user) return
-    const cards = await fetchDueCards(user.id, deckId)
-    if (cards.length === 0) return
-    setStudyCards(shuffleArray(cards))
-    setStudyBatch(0)
-    setStudyResults({ correct: 0, incorrect: 0 })
-
-    setGameState('studying')
+    try {
+      const cards = await fetchDueCards(user.id, deckId)
+      if (cards.length === 0) return
+      setStudyCards(shuffleArray(cards))
+      setStudyBatch(0)
+      setStudyResults({ correct: 0, incorrect: 0 })
+      setGameState('studying')
+    } catch {
+      // Network error — silently fail, user stays on menu
+    }
   }
 
   const handleStartExam = () => {
@@ -229,13 +232,16 @@ export default function Home() {
 
   const handleStudyLeeches = async () => {
     if (!user) return
-    const leeches = await getLeechCards(user.id)
-    if (leeches.length === 0) return
-    setStudyCards(leeches)
-    setStudyBatch(0)
-    setStudyResults({ correct: 0, incorrect: 0 })
-
-    setGameState('studying')
+    try {
+      const leeches = await getLeechCards(user.id)
+      if (leeches.length === 0) return
+      setStudyCards(leeches)
+      setStudyBatch(0)
+      setStudyResults({ correct: 0, incorrect: 0 })
+      setGameState('studying')
+    } catch {
+      // Network error — silently fail
+    }
   }
 
   const handleStudyDeck = (deck: DeckData & { id?: string }, reversed = false) => {
