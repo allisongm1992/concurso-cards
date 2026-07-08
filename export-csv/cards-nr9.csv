@@ -1,0 +1,101 @@
+front;back
+Qual é o objetivo da NR 9?;Estabelecer requisitos para avaliação e controle das exposições ocupacionais a agentes físicos, químicos e biológicos, subsidiando medidas de prevenção.
+A NR 9 trata de quais pilares da Higiene Ocupacional?;Avaliação e controle das exposições ocupacionais (os dois últimos pilares).
+Quais são os quatro pilares da Higiene Ocupacional?;Antecipação, reconhecimento, avaliação e controle dos riscos ocupacionais.
+V ou F: A NR 9 aborda os pilares de antecipação e reconhecimento dos riscos.;FALSO. A NR 9 aborda apenas avaliação e controle. Antecipação e reconhecimento são tratados no PGR (NR 1).
+A Higiene Ocupacional é definida como ciência e arte. Por que 'ciência'?;Porque se baseia em metodologias, procedimentos e análises estatísticas criteriosamente cumpridos.
+A Higiene Ocupacional é definida como ciência e arte. Por que 'arte'?;Porque várias decisões são baseadas no julgamento profissional do higienista, em sua experiência e intuição.
+Qual o objetivo de longo prazo da Higiene Ocupacional segundo Fantazzini?;Avaliar e controlar os agentes até que as exposições se situem em níveis tecnicamente toleráveis.
+O que significa 'avaliação' no contexto da NR 9?;Análise (ciência) e julgamento técnico (arte) quanto à aceitabilidade das exposições ocupacionais, usando metodologias apropriadas.
+O que significa 'controle' no contexto da NR 9?;Ações ou controles de engenharia devidamente dimensionados, projetados, instalados e mantidos para prevenir riscos.
+O que é um agente físico segundo a NR 9?;Qualquer forma de energia: ruídos, vibrações, pressões anormais, temperaturas extremas, radiações ionizantes e não ionizantes.
+V ou F: A umidade é considerada um agente físico pela NR 9.;FALSO. Umidade não é forma de energia, portanto não é agente físico. É uma condição adversa do ambiente de trabalho.
+Quando um agente físico é considerado risco físico?;Quando for capaz de causar lesão ou agravo à saúde do trabalhador, em função de sua natureza, intensidade e exposição.
+Qual a relação entre umidade e agentes físicos?;A umidade influencia diretamente a troca de calor (este sim, agente físico) entre o organismo e o ambiente, impactando a avaliação de sobrecarga térmica.
+O que é um agente químico segundo a NR 9?;Substância química, por si só ou em misturas, em seu estado natural ou produzida, utilizada ou gerada no processo de trabalho.
+Quando um agente químico é considerado risco químico?;Quando capaz de causar lesão ou agravo à saúde, em função de sua natureza, concentração e exposição.
+Quais são as vias de penetração dos agentes químicos no organismo?;Via respiratória (principal), via dérmica (pele) e via digestiva (ingestão).
+V ou F: Poeiras, fumos, névoas, neblinas, gases e vapores são agentes químicos.;FALSO. Não são agentes químicos em si, mas sim a forma como os agentes químicos se dispersam no ar ambiente.
+Dê um exemplo correto de identificação de agente químico e sua forma de dispersão.;Fumos de cádmio (cádmio = agente químico, fumos = forma de dispersão), poeira de sílica cristalina, vapores de tolueno.
+Quais as formas de dispersão dos agentes químicos no ar?;Poeiras, fumos, névoas, neblinas, gases e vapores.
+O que são aerodispersoides?;Partículas líquidas ou sólidas, de tamanho microscópico, que permanecem temporariamente em suspensão no ar (sinônimo: aerossóis). Incluem poeiras, fumos, névoas e neblinas.
+O que são poeiras na classificação de aerodispersoides?;Partículas sólidas geradas pela ruptura mecânica de um sólido (escavações, perfurações, lixamento, moagem etc.).
+O que são fumos na classificação de aerodispersoides?;Partículas sólidas formadas por condensação de vapores após volatilização de substância sólida fundida (aerossóis termicamente gerados).
+O que são névoas na classificação de aerodispersoides?;Partículas líquidas formadas pela ruptura mecânica de um líquido (aerossóis mecanicamente gerados). Ex: pintura com pistola.
+O que são neblinas na classificação de aerodispersoides?;Partículas líquidas provenientes de um líquido previamente volatilizado por processo térmico, seguido de condensação.
+Qual a diferença entre névoa e neblina?;Névoa: partículas líquidas por ruptura mecânica. Neblina: partículas líquidas por condensação de vapor (processo térmico). Ambas são aerossóis líquidos.
+Qual a diferença entre poeira e fumo?;Poeira: partículas sólidas por ruptura mecânica. Fumo: partículas sólidas por condensação de vapores de substância fundida (processo térmico). Ambos são aerossóis sólidos.
+V ou F: Quanto menor a partícula de aerodispersoide, menor o tempo de suspensão no ar.;FALSO. Quanto menor a partícula, MAIOR o tempo de suspensão e, consequentemente, maior a chance de inalação.
+Qual a diferença entre gás e vapor?;Gás: fluido no estado gasoso em condições normais de temperatura e pressão. Vapor: fase gasosa de substância que normalmente é líquida ou sólida em condições normais.
+V ou F: Vapor é a substância que, nas condições normais de pressão e temperatura, já esteja em estado gasoso.;FALSO. Essa é a definição de gás. Vapor é a fase gasosa de substância normalmente líquida ou sólida. (CESPE/2013)
+Quais filtros de respirador protegem contra poeiras, fumos, névoas e neblinas?;Filtros mecânicos (retêm partículas por barreira física).
+Quais filtros de respirador protegem contra gases e vapores?;Filtros químicos, que utilizam materiais adsorventes como carvão ativado para reter contaminantes por adsorção física.
+V ou F: Um respirador PFF2 protege contra vapores orgânicos.;FALSO. PFF2 é filtro mecânico, protege contra partículas (poeiras, névoas, fumos). Para vapores orgânicos é necessário filtro químico.
+O que é um agente biológico segundo a NR 9?;Microrganismos, parasitas ou materiais originados de organismos capazes de acarretar lesão ou agravo à saúde do trabalhador.
+Quando um agente biológico é considerado risco biológico?;Quando capaz de acarretar lesão ou agravo à saúde, em função de sua natureza e do tipo de exposição.
+Como deve ser feita a identificação de agentes biológicos?;Pela classificação (bactéria, vírus, fungo, parasita, príon) seguida do nome científico. Ex: fungo Coccidioides immitis.
+V ou F: Para agentes biológicos, basta identificar a classificação genérica (ex: 'vírus').;FALSO. É necessário identificar também o nome científico do agente, para fins de adoção das medidas de prevenção adequadas.
+A NR 9 se aplica a quais situações?;Onde houver exposições ocupacionais a agentes físicos, químicos e biológicos. Riscos irrelevantes podem ser desconsiderados.
+Quais exposições podem ser desconsideradas pela NR 9?;Agentes químicos classificados como não perigosos ou situações que representam apenas desconforto (térmico ou acústico), sem risco à saúde.
+Para que serve a NR 9 e seus anexos?;Para prevenção e controle dos riscos ocupacionais causados por agentes físicos, químicos e biológicos.
+Qual norma deve ser usada para caracterização de atividades insalubres ou perigosas?;NR 15 (insalubridade) e NR 16 (periculosidade), e não a NR 9.
+V ou F: A NR 9 pode ser utilizada para fins de caracterização de insalubridade.;FALSO. Para insalubridade deve-se aplicar a NR 15. A NR 9 é para prevenção e controle.
+Qual norma deve ser usada para avaliação de condições de conforto?;NR 17 – Ergonomia.
+Onde se encontram informações sobre toxicidade de agentes químicos?;Na Ficha com Dados de Segurança (FDS), de elaboração obrigatória pelo fabricante nacional ou importador (NR 26).
+Quem é obrigado a elaborar a Ficha com Dados de Segurança (FDS)?;O fabricante nacional ou, no caso de importação, o fornecedor no mercado nacional (conforme NR 26).
+Para quais produtos a FDS é obrigatória?;Para todo produto químico classificado como perigoso, e também para não perigosos cujos usos previstos originem riscos à saúde e segurança.
+O que deve constar na FDS no caso de misturas?;Nome e concentração (ou faixa) das substâncias que representam perigo à saúde e que possuam limite de exposição ocupacional.
+Qual a norma técnica que regulamenta o formato da FDS?;ABNT NBR 14725:2023, seguindo o formato e conteúdo estabelecidos pelo GHS.
+O que é o GHS mencionado na NR 9/NR 26?;Sistema Globalmente Harmonizado de Classificação e Rotulagem de Produtos Químicos, que padroniza a comunicação de perigos.
+O que deve conter a análise preliminar para identificação das exposições?;Descrição das atividades, identificação do agente e formas de exposição, possíveis lesões/agravos e fatores determinantes da exposição.
+Os dados da análise preliminar alimentam qual documento?;O inventário de riscos do PGR (Programa de Gerenciamento de Riscos).
+Na descrição das atividades, deve-se considerar o procedimento de trabalho ou o modo operatório?;O modo operatório (WAD – Work As Done), ou seja, como o trabalhador realmente executa a tarefa, e não o procedimento formal.
+O que significa WAD na análise de exposições?;Work As Done – trabalho como realmente é realizado, diferente do trabalho como imaginado (WAI – Work As Imagined).
+Na identificação de agentes químicos, basta citar 'fumos' ou 'poeiras'?;Não. Deve-se identificar a substância ou mistura correspondente. Ex: fumos de cobre, poeira de manganês.
+Por que é importante identificar a forma de incorporação ao ar de um agente químico?;Porque a toxicidade pode variar em função da forma de incorporação ao ar e da via de entrada no organismo.
+Qual a relação entre pressão de vapor e risco de exposição?;Quanto maior a pressão de vapor, maior a volatilidade do agente e, consequentemente, maior o risco de exposição por inalação.
+O que são formas de exposição que devem ser identificadas na análise preliminar?;Como ocorre a exposição: vias de entrada, se eventual/permanente/intermitente, tempo de duração, fonte geradora, trajetória do agente.
+V ou F: Exposições decorrentes de atividades não rotineiras não precisam ser consideradas.;FALSO. Exposições de atividades não rotineiras também devem ser consideradas na análise preliminar.
+O que é efeito aditivo na exposição simultânea a agentes químicos?;Quando o efeito final é igual à soma dos efeitos de cada um dos agentes envolvidos isoladamente.
+O que é efeito sinérgico na exposição a agentes químicos?;Quando o efeito final é MAIOR que a soma dos efeitos de cada agente em separado.
+O que é potencialização na exposição a agentes químicos?;Quando o efeito de um agente é aumentado se combinado com outro agente.
+O que é antagonismo na exposição a agentes químicos?;Quando o efeito de um agente é diminuído, inativado ou eliminado se combinado com outro agente.
+O que é reação idiossincrática?;Reação anormal a agentes tóxicos: reação adversa a doses muito baixas (não tóxicas) ou tolerância surpreendente a doses altas.
+Qual a diferença entre efeito sinérgico e potencialização?;Sinérgico: efeito combinado > soma dos efeitos individuais. Potencialização: efeito de UM agente é aumentado pela presença de outro.
+V ou F: Na exposição simultânea a químicos, a resposta final é sempre maior que a soma dos efeitos individuais.;FALSO. Pode ser maior (sinergismo), igual (aditivo) ou menor (antagonismo).
+A exposição simultânea a várias substâncias químicas pode alterar quais fatores?;Absorção, ligação proteica, metabolização e excreção, influindo na toxicidade de cada substância separadamente.
+V ou F: A NR 9 é uma norma de segurança do trabalho.;FALSO. A NR 9 é uma norma de higiene ocupacional, focada na avaliação e controle de exposições a agentes ambientais.
+Qual a definição de Higiene Ocupacional segundo a ABHO?;Ciência e arte dedicadas ao estudo e gerenciamento das exposições ocupacionais a agentes físicos, químicos e biológicos, por meio de antecipação, reconhecimento, avaliação e controle.
+A NR 9 tem relação com qual programa da NR 1?;Com o PGR – Programa de Gerenciamento de Riscos. A NR 9 avalia e controla os riscos identificados no PGR.
+V ou F: A NR 9 substitui o antigo PPRA.;VERDADEIRO. A nova NR 9 (Portaria SEPRT 6.735/2020) substituiu o antigo PPRA, agora integrado ao PGR da NR 1.
+Qual foi a portaria que iniciou a construção da nova NR 9?;Portaria SEPRT 6.735/2020.
+A nova NR 9 receberá novos anexos sobre quais temas?;Anexos referentes a agentes químicos, físicos e biológicos específicos, além dos já existentes sobre Vibração e Calor.
+Quais anexos já existem na NR 9?;Anexos sobre Vibração e Calor (sobrecarga térmica).
+A abrangência das medidas de prevenção depende de quê?;Das características das exposições e das necessidades de controle, ou seja, da complexidade do processo.
+V ou F: Dificilmente se alcança a completa eliminação dos agentes nos locais de trabalho.;VERDADEIRO. Por isso o objetivo é controlar até níveis tecnicamente toleráveis (Fantazzini).
+O que são fumos metálicos e quando são gerados?;Partículas sólidas geradas por condensação de vapores de metais fundidos, em operações de solda, fundição ou aquecimento de metais.
+O que são fumos plásticos e quando são gerados?;Partículas sólidas geradas em operações de injeção e extrusão de polímeros ou aquecimento/fusão de materiais plásticos.
+Dê exemplos de poeiras vegetais.;Poeira de algodão, linho, cânhamo e bagaço de cana.
+Dê exemplos de poeiras minerais.;Poeira de manganês, sílica, asbesto (amianto) e ferrovanádio.
+O que são fibras no contexto de poeiras?;Poeiras com forma alongada. Exemplo: asbesto (amianto).
+V ou F: Poeiras e névoas são ambos aerossóis mecanicamente gerados.;VERDADEIRO. Poeiras são sólidas e névoas são líquidas, mas ambas resultam de ruptura mecânica.
+V ou F: Fumos e neblinas são ambos aerossóis termicamente gerados.;VERDADEIRO. Fumos são sólidos e neblinas são líquidas, mas ambos envolvem processo térmico (volatilização + condensação).
+Por que a ocorrência de neblina é rara na indústria?;Porque a condensação do vapor no ar só ocorre quando o ar fica saturado pelo vapor e há diminuição subsequente da temperatura.
+Qual a principal via de penetração dos agentes químicos?;Via respiratória (inalação), quando a substância se apresenta como poeiras, fumos, névoas, neblinas, gases ou vapores.
+O que o PPR deve considerar sobre aerodispersoides?;A classificação correta (poeira, fumo, névoa, neblina, gás, vapor) para selecionar o tipo adequado de respirador e filtro.
+V ou F: A presença de um agente químico no processo significa necessariamente que há risco.;FALSO. Deve-se analisar incorporação ao ar, exposição do trabalhador, via de entrada, toxicidade, parâmetros do processo etc.
+Quais fatores do processo podem alterar as características físico-químicas de uma substância?;Calor e pressão, que podem alterar volatilidade, estado físico e gerar subprodutos durante o processo.
+Em quais setores podem ser encontrados agentes biológicos?;Hospitais, laboratórios, agricultura, construção civil, metalurgia (óleos de corte), indústria de alimentos, coleta de lixo, esgoto, entre outros.
+V ou F: Agentes biológicos são encontrados exclusivamente em hospitais e laboratórios.;FALSO. São encontrados em diversos setores: agricultura, construção civil, metalurgia, indústria de alimentos, coleta de lixo, esgoto etc.
+Qual a associação brasileira citada como referência em Higiene Ocupacional?;ABHO – Associação Brasileira de Higienistas Ocupacionais.
+Qual entidade americana é referência em Higiene Ocupacional citada na NR 9?;AIHA – American Industrial Hygiene Association.
+V ou F: Para agentes químicos, o risco depende da natureza, concentração e exposição.;VERDADEIRO. Esses três fatores determinam se o agente químico constitui risco químico.
+V ou F: Para agentes físicos, o risco depende da natureza, concentração e exposição.;FALSO. Para agentes físicos, depende da natureza, INTENSIDADE e exposição (não concentração).
+V ou F: Para agentes biológicos, o risco depende da natureza e do tipo de exposição.;VERDADEIRO. Diferente dos agentes químicos e físicos, não se fala em concentração ou intensidade.
+O que são possíveis lesões ou agravos que devem ser identificados na análise preliminar?;Queixas, antecedentes médicos dos trabalhadores expostos e possíveis danos à saúde relacionados aos riscos, disponíveis na literatura técnica.
+O resultado da avaliação da NR 9 serve de subsídio para quê?;Para a adoção das medidas de prevenção (decisão e dimensionamento dos controles).
+V ou F: A NR 9 exige conhecimento dos princípios e métodos da Higiene Ocupacional.;VERDADEIRO. Segundo pesquisador da Fundacentro, a NR 1 e principalmente a NR 9 exigem esse conhecimento.
+Qual a importância da análise preliminar antes da avaliação dos riscos?;Identificar agentes, fontes geradoras, formas de exposição, vias de entrada e fatores que agravam a exposição, alimentando o inventário de riscos.
+As formas de exposição podem ser identificadas por quais critérios?;Por processo, função, setor ou atividade, dependendo da complexidade das situações analisadas.
+V ou F: O controle na NR 9 alcança apenas a implementação das medidas.;FALSO. O controle alcança implementação, validação e acompanhamento das medidas de prevenção.
+V ou F: A Higiene Ocupacional visa à preservação da saúde dos trabalhadores, desconsiderando o meio ambiente.;FALSO. A definição inclui a preservação da saúde considerando também o meio ambiente e a comunidade.

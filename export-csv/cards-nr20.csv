@@ -1,0 +1,105 @@
+front;back
+Qual o objetivo da NR-20?;Estabelecer requisitos mínimos para a gestão da segurança e saúde no trabalho contra fatores de riscos de atividades com líquidos inflamáveis, gases inflamáveis e líquidos combustíveis.
+Quais substâncias são abrangidas pela NR-20?;Líquidos inflamáveis, gases inflamáveis e líquidos combustíveis.
+V ou F: A NR-20 abrange atividades de manipulação de líquidos combustíveis.;Falso. A NR-20 NÃO se aplica à manipulação de líquidos combustíveis, por ser considerada de baixo risco (categoria 4 do SGH).
+Segundo o SGH, quais são as categorias de gases inflamáveis?;Categorias 1 e 2.
+Segundo o SGH, quais são as categorias de líquidos inflamáveis?;Categorias 1, 2 e 3.
+Segundo o SGH, qual a categoria dos líquidos combustíveis?;Categoria 4.
+O que é ponto de fulgor (flash point)?;Temperatura mínima a partir da qual uma substância começa a desprender vapores em quantidade suficiente para formar uma mistura inflamável ao entrar em contato com uma fonte externa de calor.
+Qual o ponto de fulgor que diferencia líquidos inflamáveis de líquidos combustíveis?;60 °C. Líquidos inflamáveis: ponto de fulgor ≤ 60 °C. Líquidos combustíveis: ponto de fulgor > 60 °C e ≤ 93 °C.
+Qual a faixa de ponto de fulgor dos líquidos inflamáveis?;Ponto de fulgor menor ou igual a 60 °C.
+Qual a faixa de ponto de fulgor dos líquidos combustíveis?;Ponto de fulgor superior a 60 °C e menor ou igual a 93 °C.
+Em que condições um gás é classificado como inflamável pela NR-20?;Quando inflama com o ar a 20 °C e a uma pressão padrão de 101,3 kPa.
+V ou F: A chama se mantém no ponto de fulgor.;Falso. No ponto de fulgor a chama NÃO se mantém, pois a quantidade de vapores desprendidos é insuficiente para manter a combustão.
+O que são emissões fugitivas segundo a NR-20?;Liberações de gás ou vapor inflamável que ocorrem de forma contínua ou intermitente, durante carga/descarga de tanques, em selos de bombas, vedações de flanges, selos de compressores, drenos, etc.
+O que é ponto de ignição?;Temperatura mínima necessária para os gases desprendidos dos combustíveis entrarem em combustão apenas pelo contato com o oxigênio do ar, sem necessidade de fonte de calor externa.
+Qual a diferença entre manipulação e manuseio na NR-20?;Manipulação: preparação ou operação manual com contato direto do produto com o ambiente. Manuseio: movimentação do produto envasado, embalado ou lacrado.
+O que é transferência segundo a NR-20?;Atividade de movimentação de inflamáveis entre recipientes (tanques, vasos, tambores) por meio de tubulações.
+O que é uma área classificada?;Área na qual uma atmosfera explosiva está presente ou na qual é provável sua ocorrência, exigindo precauções especiais para construção, instalação e utilização de equipamentos elétricos.
+O que é atmosfera explosiva?;Mistura com o ar de substâncias inflamáveis na forma de gases, vapores, névoas, poeiras ou fibras, na qual após a ignição a combustão se propaga pela mistura remanescente.
+Qual a diferença entre envasado e lacrado na NR-20?;Envasado: líquido ou gás acondicionado em recipiente, podendo ou não ser lacrado. Lacrado: produto que possui selo e/ou lacre de garantia de qualidade e/ou inviolabilidade.
+O que é considerado uma instalação na NR-20?;Unidade de extração, produção, armazenamento, transferência, manuseio e manipulação de inflamáveis e líquidos combustíveis, em caráter permanente ou transitório, incluindo todos os equipamentos necessários.
+Em quantas classes são divididas as instalações na NR-20?;Três classes: I, II e III, em ordem crescente de risco.
+Quais critérios são usados para classificar as instalações na NR-20?;Tipo de atividade e capacidade de armazenamento (permanente ou transitória).
+Na classificação das instalações, o que tem prioridade: tipo de atividade ou capacidade de armazenamento?;O tipo de atividade tem prioridade sobre a capacidade de armazenamento.
+Em qual classe se enquadram os postos de serviço com inflamáveis?;Classe I, independentemente da capacidade de armazenamento.
+Em qual classe se enquadram as refinarias?;Classe III, independentemente da capacidade de armazenamento.
+Em qual classe se enquadram as instalações petroquímicas?;Classe III, independentemente da capacidade de armazenamento.
+Em qual classe se enquadram as usinas de fabricação de etanol?;Classe III, independentemente da capacidade de armazenamento.
+Em qual classe se enquadram as unidades de processamento de gás natural?;Classe III, independentemente da capacidade de armazenamento.
+Em qual classe se enquadram as engarrafadoras de gases inflamáveis?;Classe II, independentemente da capacidade de armazenamento.
+Em qual classe se enquadra o transporte dutoviário de gases inflamáveis?;Classe II, independentemente da capacidade de armazenamento.
+Qual o limite de PMTA para distribuição canalizada de gases na Classe I?;Pressão Máxima de Trabalho Admissível (PMTA) limitada a 18,0 kgf/cm².
+Qual a capacidade de armazenamento de gases inflamáveis para Classe I?;Acima de 2 toneladas até 60 toneladas.
+Qual a capacidade de armazenamento de líquidos inflamáveis/combustíveis para Classe I?;Acima de 10 m³ até 5.000 m³.
+Qual a capacidade de armazenamento de gases inflamáveis para Classe II?;Acima de 60 toneladas até 600 toneladas.
+Qual a capacidade de armazenamento de líquidos inflamáveis/combustíveis para Classe II?;Acima de 5.000 m³ até 50.000 m³.
+Qual a capacidade de armazenamento de gases inflamáveis para Classe III?;Acima de 600 toneladas.
+Qual a capacidade de armazenamento de líquidos inflamáveis/combustíveis para Classe III?;Acima de 50.000 m³.
+V ou F: Quando a capacidade de armazenamento se enquadra em duas classes distintas, deve-se utilizar a classe de menor gradação.;Falso. Deve-se utilizar a classe de MAIOR gradação.
+A NR-20 se aplica a plataformas offshore?;Não. Plataformas e instalações de apoio para exploração e produção de petróleo e gás do subsolo marinho são regidas pela NR-37.
+A NR-20 se aplica a edificações residenciais unifamiliares?;Não. Edificações destinadas exclusivamente ao uso residencial, constituídas de uma única unidade residencial, estão fora do escopo da NR-20.
+O que é Análise de Riscos segundo a NR-20?;Conjunto de métodos e técnicas que identificam cenários hipotéticos de ocorrências indesejadas, possibilidades de danos, efeitos e consequências em operações com inflamáveis e combustíveis.
+Quem deve elaborar a Análise de Riscos na NR-20?;Equipe multidisciplinar com, no mínimo, um trabalhador com experiência na instalação objeto da análise.
+V ou F: A Análise de Riscos das instalações Classe I deve ser coordenada por profissional habilitado.;Falso. Apenas as instalações Classes II e III exigem coordenação por profissional habilitado com proficiência no assunto.
+Qual metodologia de análise de riscos deve ser usada nas instalações Classe I?;Análise Preliminar de Perigos/Riscos (APP/APR).
+Quem define a metodologia de análise de riscos nas instalações Classes II e III?;O profissional habilitado, devendo a escolha ser tecnicamente fundamentada e registrada na própria análise.
+Cite pelo menos 4 metodologias de análise de riscos previstas na NR-20.;APP/APR, What-if, HAZOP, FMEA/FMECA, Árvore de Falhas (AAF), Árvore de Eventos (AAE), Análise Quantitativa de Riscos (AQR).
+Em quais situações as análises de riscos devem ser revisadas? (cite 3);No prazo recomendado pela própria análise, se houver modificações significativas, por solicitação do SESMT ou CIPA, por recomendação decorrente de acidentes/incidentes.
+V ou F: As Análises de Riscos devem estar disponíveis para consulta dos trabalhadores sem nenhuma restrição.;Falso. Devem estar disponíveis, EXCETO nos aspectos que envolvam informações comerciais confidenciais.
+O que é o Prontuário da Instalação na NR-20?;Conjunto de documentos com o registro de todo o histórico da instalação, correspondendo a uma memória dinâmica das informações técnicas desde a fase de projeto.
+Quais documentos compõem o Prontuário da Instalação? (cite todos);Projeto da Instalação, Plano de Inspeção e Manutenção, Análise de Riscos, Plano de prevenção e controle de vazamentos/incêndios/explosões, Plano de Resposta a Emergências.
+V ou F: O Prontuário da Instalação pode ser mantido apenas em meio eletrônico.;Verdadeiro. Os documentos que compõem o Prontuário podem ser mantidos em meio físico ou eletrônico.
+Para quem o Prontuário da Instalação deve estar disponível?;Às autoridades competentes e para consulta aos trabalhadores e seus representantes.
+Quem deve organizar, manter e atualizar o Prontuário da Instalação?;O empregador.
+Qual a periodicidade de revisão dos procedimentos operacionais nas instalações Classes I e II?;No máximo trienalmente (a cada 3 anos).
+Qual a periodicidade de revisão dos procedimentos operacionais nas instalações Classe III?;No máximo quinquenalmente (a cada 5 anos).
+V ou F: Os procedimentos operacionais substituem as medidas de proteção coletivas.;Falso. São medidas administrativas complementares, que NÃO substituem as medidas de proteção coletivas.
+Quais fases operacionais devem constar nos procedimentos das instalações Classes II e III com unidades de processo?;Pré-operação, operação normal, operação temporária, operação em emergência, parada normal, parada de emergência e operação pós-emergência.
+Quais são os tipos de capacitação previstos na NR-20?;Curso de Iniciação, Curso Básico, Curso Intermediário, Curso Avançado I, Curso Avançado II e Curso Específico.
+Qual a carga horária do Curso Básico para instalações Classe I?;4 horas.
+Qual a carga horária do Curso Básico para instalações Classe II?;6 horas.
+Qual a carga horária do Curso Básico para instalações Classe III?;8 horas.
+Qual a carga horária do Curso Intermediário para instalações Classe I?;12 horas.
+Qual a carga horária do Curso Intermediário para instalações Classe II?;14 horas.
+Qual a carga horária do Curso Intermediário para instalações Classe III?;16 horas.
+Qual a carga horária do Curso Avançado I?;20 horas.
+Qual a carga horária do Curso Avançado II?;32 horas.
+Qual a carga horária do Curso Específico para instalações Classe II?;14 horas.
+Qual a carga horária do Curso Específico para instalações Classe III?;16 horas.
+Para quais atividades é exigido o Curso Básico na NR-20?;Atividades específicas, pontuais e de curta duração.
+Para quais atividades é exigido o Curso Intermediário na NR-20?;Manutenção e inspeção (todas as classes) e operação/atendimento a emergências (Classe I).
+Para quais atividades é exigido o Curso Avançado I?;Operação e atendimento a emergências em instalações Classe II.
+Para quais atividades é exigido o Curso Avançado II?;Operação e atendimento a emergências em instalações Classe III.
+Para quem é destinado o Curso Específico da NR-20?;Profissionais de segurança e saúde no trabalho de instalações Classes II e III.
+Qual a periodicidade de atualização do Curso Básico?;Trienal (a cada 3 anos), com carga horária de 4 horas.
+Qual a periodicidade de atualização do Curso Intermediário para Classe I?;Trienal (a cada 3 anos).
+Qual a periodicidade de atualização do Curso Intermediário para Classes II e III?;Bienal (a cada 2 anos).
+Qual a periodicidade de atualização do Curso Avançado I?;Bienal (a cada 2 anos).
+Qual a periodicidade de atualização do Curso Avançado II?;Anual (a cada 1 ano).
+Em quanto tempo deve ser realizada atualização quando ocorrer modificação significativa na instalação?;Em até 30 dias.
+Em quanto tempo deve ser realizada atualização quando ocorrerem queimaduras de 2º ou 3º grau com internação?;Em até 45 dias.
+Em quanto tempo deve ser realizada atualização quando ocorrer morte de trabalhador?;Em até 90 dias.
+V ou F: Os cursos de capacitação da NR-20 podem ser realizados fora da jornada de trabalho.;Falso. As capacitações devem ser realizadas DURANTE a jornada de trabalho.
+V ou F: O conteúdo prático dos cursos da NR-20 pode ser realizado na modalidade EaD.;Falso. O conteúdo prático deve necessariamente ser realizado na modalidade presencial.
+O que deve ser emitido ao final dos cursos da NR-20?;Certificado, para trabalhadores que obtiverem aproveitamento satisfatório após avaliação.
+Quem define os critérios de aproveitamento satisfatório nos cursos da NR-20?;O empregador, pois a norma não dispõe sobre critérios específicos de parametrização.
+V ou F: A NR-20 tem origem na Convenção 174 da OIT.;Verdadeiro. Vários conceitos e disposições da NR-20 têm sua origem na Convenção 174 da OIT sobre Prevenção de Acidentes Industriais Maiores.
+O que são acidentes maiores segundo a Convenção 174 da OIT?;Eventos súbitos (incêndio ou explosão de grande magnitude) que implicam grave perigo, imediato ou retardado, para trabalhadores, população ou meio ambiente.
+Quais os fatores de risco mais significativos nas atividades com inflamáveis e combustíveis?;Explosões e incêndios, decorrentes de vazamentos, derramamentos e emissões fugitivas.
+Quantos anexos possui a NR-20? Cite-os.;Quatro: I – Capacitação, II – Exceções à classificação das instalações, III – Tanques de inflamáveis no interior de edifícios, IV – Exposição ao benzeno em postos de combustíveis.
+V ou F: A NR-20 pode ser utilizada para caracterização de atividades insalubres ou perigosas.;Falso. Para caracterização de insalubridade/periculosidade devem ser aplicadas as NR-15 e NR-16.
+V ou F: Um condomínio residencial com central de GLP entre 2 e 60 toneladas se enquadra na NR-20.;Verdadeiro. Enquadra-se como instalação Classe I (diferente de edificação residencial unifamiliar, que está fora do escopo).
+Em que consiste a segurança operacional na NR-20?;Elaborar, documentar, implementar, divulgar e manter atualizados procedimentos operacionais em conformidade com o projeto e as recomendações das análises de riscos.
+V ou F: A instalação pode funcionar em caráter permanente ou transitório segundo a NR-20.;Verdadeiro. A NR-20 abrange instalações em caráter permanente ou transitório.
+Cite exemplos de atividades de Classe III na NR-20.;Refinarias, unidades de processamento de gás natural, instalações petroquímicas e usinas de fabricação de etanol.
+Cite exemplos de atividades de Classe II na NR-20.;Engarrafadoras de gases inflamáveis, transporte dutoviário de gases/líquidos inflamáveis, distribuição canalizada de gases com PMTA acima de 18,0 kgf/cm².
+Qual a etapa da instalação em que a NR-20 se aplica? (cite pelo menos 5);Projeto, construção, montagem, operação, manutenção, inspeção e desativação.
+O que deve conter o Plano de prevenção incluído no Prontuário da Instalação?;Prevenção e controle de vazamentos, derramamentos, incêndios e explosões, e identificação das fontes de emissões fugitivas.
+V ou F: Distribuição canalizada de gases com PMTA de 15 kgf/cm² é Classe I.;Verdadeiro. A Classe I abrange distribuição canalizada de gases inflamáveis com PMTA limitada a 18,0 kgf/cm².
+V ou F: Distribuição canalizada de gases com PMTA de 20 kgf/cm² é Classe I.;Falso. PMTA acima de 18,0 kgf/cm² se enquadra na Classe II.
+O que acontece quando um trabalhador com Curso Básico necessita do Intermediário?;Deve fazer a complementação da carga horária e dos conteúdos indicados na norma.
+V ou F: O empregador deve elaborar e documentar as análises de riscos para todas as classes de instalações.;Verdadeiro. Todas as instalações (Classes I, II e III) devem ter análises de riscos elaboradas e documentadas.
+Quais conteúdos práticos devem estar nos cursos Básico, Intermediário e Avançados?;Conhecimentos e utilização dos sistemas de segurança contra incêndio com inflamáveis existentes na instalação.
+V ou F: Empresas de transporte rodoviário com tanque de diesel de 3.000 m³ se enquadram na NR-20.;Verdadeiro. Enquadram-se como Classe I (capacidade acima de 10 m³ até 5.000 m³ de líquidos combustíveis).
+Quando o histórico de acidentes e incidentes exigir, o que deve ser feito quanto à análise de riscos?;A análise de riscos deve ser revisada.
