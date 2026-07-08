@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { DueCard, Rating } from '@/lib/reviews'
 
 interface ExamModeProps {
@@ -17,6 +17,14 @@ export default function ExamMode({ cards, timeLimit, onComplete, onBack }: ExamM
   const [incorrect, setIncorrect] = useState(0)
   const [timeLeft, setTimeLeft] = useState(timeLimit)
   const [finished, setFinished] = useState(false)
+
+  // Refs to avoid stale closures in effects
+  const correctRef = useRef(correct)
+  const incorrectRef = useRef(incorrect)
+  const timeLeftRef = useRef(timeLeft)
+  correctRef.current = correct
+  incorrectRef.current = incorrect
+  timeLeftRef.current = timeLeft
 
   const currentCard = cards[currentIndex]
 
@@ -36,11 +44,14 @@ export default function ExamMode({ cards, timeLimit, onComplete, onBack }: ExamM
     return () => clearInterval(interval)
   }, [finished])
 
-  // When time runs out or all cards done
+  // When time runs out or all cards done — use refs for current values
   useEffect(() => {
     if (finished) {
-      // Use refs to avoid stale closure
-      onComplete({ correct, incorrect, timeUsed: timeLimit - timeLeft })
+      onComplete({
+        correct: correctRef.current,
+        incorrect: incorrectRef.current,
+        timeUsed: timeLimit - timeLeftRef.current,
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished])
