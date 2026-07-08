@@ -47,17 +47,6 @@ export async function getProgress(userId: string): Promise<UserProgress> {
   return mapRow(data)
 }
 
-export async function addXp(userId: string, xp: number): Promise<UserProgress> {
-  const current = await getProgress(userId)
-  const newXp = current.totalXp + xp
-
-  await supabase
-    .from('user_progress')
-    .update({ total_xp: newXp })
-    .eq('user_id', userId)
-
-  return { ...current, totalXp: newXp }
-}
 
 export async function recordStudySession(
   userId: string,
@@ -91,39 +80,6 @@ export async function recordStudySession(
   return { progress: newProgress, newMedals }
 }
 
-export async function recordMatchingGame(
-  userId: string,
-  xpEarned: number,
-  timeSeconds: number
-): Promise<{ progress: UserProgress; newMedals: MedalCheck[] }> {
-  const current = await getProgress(userId)
-
-  const newFastest =
-    current.fastestGame === null
-      ? timeSeconds
-      : Math.min(current.fastestGame, timeSeconds)
-
-  const updated = {
-    total_xp: current.totalXp + xpEarned,
-    games_played: current.gamesPlayed + 1,
-    fastest_game: newFastest,
-  }
-
-  await supabase
-    .from('user_progress')
-    .update(updated)
-    .eq('user_id', userId)
-
-  const newProgress: UserProgress = {
-    ...current,
-    totalXp: updated.total_xp,
-    gamesPlayed: updated.games_played,
-    fastestGame: updated.fastest_game,
-  }
-
-  const newMedals = await checkAndAwardMedals(userId, newProgress)
-  return { progress: newProgress, newMedals }
-}
 
 export async function recordDeckCreated(
   userId: string
@@ -144,24 +100,6 @@ export async function recordDeckCreated(
   return { progress: newProgress, newMedals }
 }
 
-export async function recordFreezeUsed(
-  userId: string
-): Promise<{ progress: UserProgress; newMedals: MedalCheck[] }> {
-  const current = await getProgress(userId)
-
-  await supabase
-    .from('user_progress')
-    .update({ total_freezes_used: current.totalFreezesUsed + 1 })
-    .eq('user_id', userId)
-
-  const newProgress: UserProgress = {
-    ...current,
-    totalFreezesUsed: current.totalFreezesUsed + 1,
-  }
-
-  const newMedals = await checkAndAwardMedals(userId, newProgress)
-  return { progress: newProgress, newMedals }
-}
 
 export async function getUserMedals(userId: string): Promise<UnlockedMedal[]> {
   const { data, error } = await supabase

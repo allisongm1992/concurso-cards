@@ -167,8 +167,3 @@ export function exportDeckCSV(deck: DeckData) {
 }
 
 // Export deck as JSON
-export function exportDeckJSON(deck: DeckData) {
-  const json = generateJSON(deck)
-  const filename = `${deck.title || 'deck'}.json`
-  downloadFile(json, filename, 'application/json')
-}

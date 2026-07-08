@@ -86,14 +86,6 @@ export async function createDeck(
 }
 
 // Deletar deck
-export async function deleteDeck(deckId: string): Promise<boolean> {
-  const { error } = await supabase
-    .from('decks')
-    .delete()
-    .eq('id', deckId)
-
-  return !error
-}
 
 // Seed: salvar decks de exemplo no Supabase pra um usuário novo
 export async function seedSampleDecks(

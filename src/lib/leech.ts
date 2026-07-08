@@ -55,7 +55,3 @@ export async function getLeechCards(userId: string): Promise<LeechCard[]> {
   return leechCards
 }
 
-export async function getLeechCount(userId: string): Promise<number> {
-  const cards = await getLeechCards(userId)
-  return cards.length
-}

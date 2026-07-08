@@ -55,21 +55,8 @@ export function calculateLevel(totalXp: number): LevelInfo {
   }
 }
 
-export function getXpForStudyCard(knew: boolean): number {
-  return knew ? 15 : 5
-}
 
-export function getXpForMatchingGame(matches: number, attempts: number): number {
-  const base = 50
-  const accuracy = attempts > 0 ? matches / attempts : 0
-  if (accuracy >= 1.0) return base + 50
-  if (accuracy >= 0.8) return base + 25
-  return base
-}
 
-export function getXpForStreak(): number {
-  return 20
-}
 
 export function getXpForMedal(): number {
   return 30
