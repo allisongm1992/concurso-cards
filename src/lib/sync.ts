@@ -99,15 +99,39 @@ export async function seedSampleDecks(
     .eq('user_id', userId)
 
   const existingTitles = new Set((existing ?? []).map(d => d.title))
+  const newDecks = sampleDecks.filter(d => !existingTitles.has(d.title))
 
-  // Inserir apenas decks que o usuário ainda não tem (por título)
-  for (const deck of sampleDecks) {
-    if (existingTitles.has(deck.title)) continue
-    await createDeck(userId, {
-      title: deck.title,
-      subject: deck.subject,
-      description: deck.description,
-      cards: deck.cards,
-    })
+  if (newDecks.length === 0) return
+
+  // Batch insert: create all decks first, then all cards
+  const deckInserts = newDecks.map(d => ({
+    user_id: userId,
+    title: d.title,
+    subject: d.subject,
+    description: d.description,
+    is_public: false,
+  }))
+
+  const { data: createdDecks } = await supabase
+    .from('decks')
+    .insert(deckInserts)
+    .select('id, title')
+
+  if (!createdDecks || createdDecks.length === 0) return
+
+  // Map created deck IDs to their cards
+  const allCards: { deck_id: string; front: string; back: string }[] = []
+  for (const created of createdDecks) {
+    const source = newDecks.find(d => d.title === created.title)
+    if (!source) continue
+    for (const card of source.cards) {
+      allCards.push({ deck_id: created.id, front: card.front, back: card.back })
+    }
+  }
+
+  // Insert cards in batches of 500 (Supabase limit)
+  for (let i = 0; i < allCards.length; i += 500) {
+    const batch = allCards.slice(i, i + 500)
+    await supabase.from('cards').insert(batch)
   }
 }
