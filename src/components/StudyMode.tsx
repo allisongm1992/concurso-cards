@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { DueCard, Rating, recordReview } from '@/lib/reviews'
 
 interface StudyModeProps {
@@ -129,6 +129,29 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
       setTransitioning(false)
     }, 200)
   }, [currentIndex, cards, userId, currentCard, correct, incorrect, transitioning, onComplete])
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+
+      if (e.key === ' ' && !revealed) {
+        e.preventDefault()
+        handleReveal()
+      } else if (e.key === 'ArrowRight' && revealed && !transitioning) {
+        handleRate('good')
+      } else if (e.key === 'ArrowLeft' && revealed && !transitioning) {
+        handleRate('again')
+      } else if ((e.key === 'z' || e.key === 'Z') && history.length > 0) {
+        handleUndo()
+      } else if (e.key === 's' && !revealed) {
+        handleSuspend()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [revealed, transitioning, history.length, handleReveal, handleRate, handleUndo, handleSuspend])
 
   if (!currentCard) return null
 

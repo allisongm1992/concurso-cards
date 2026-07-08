@@ -25,9 +25,12 @@ import { MedalCheck, UnlockedMedal } from '@/lib/medals'
 import { getProgress, recordStudySession, recordDeckCreated, getUserMedals, UserProgress } from '@/lib/progress'
 import { getDailyGoal, setDailyGoalTarget, incrementDailyProgress, DailyGoal } from '@/lib/daily-goal'
 import { decodeDeckFromShare } from '@/lib/share'
+import { getLeechCards, LeechCard } from '@/lib/leech'
+import ExamMode from '@/components/ExamMode'
+import ExamResult from '@/components/ExamResult'
 import DailyGoalBar from '@/components/DailyGoalBar'
 
-type GameState = 'login' | 'menu' | 'editor' | 'studying' | 'study-progress' | 'profile' | 'importing'
+type GameState = 'login' | 'menu' | 'editor' | 'studying' | 'study-progress' | 'profile' | 'importing' | 'exam' | 'exam-result'
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array]
@@ -55,6 +58,8 @@ export default function Home() {
   const [medals, setMedals] = useState<UnlockedMedal[]>([])
   const [medalToast, setMedalToast] = useState<MedalCheck | null>(null)
   const [dailyGoal, setDailyGoal] = useState<DailyGoal>(getDailyGoal())
+  const [leechCount, setLeechCount] = useState(0)
+  const [examResults, setExamResults] = useState({ correct: 0, incorrect: 0, timeUsed: 0, total: 0 })
 
   // Check for shared deck in URL
   useEffect(() => {
@@ -145,6 +150,9 @@ export default function Home() {
     setLevelInfo(calculateLevel(prog.totalXp))
     const userMedals = await getUserMedals(user.id)
     setMedals(userMedals)
+    // Load leech count
+    const leeches = await getLeechCards(user.id)
+    setLeechCount(leeches.length)
   }
 
   const showMedalToast = (newMedals: MedalCheck[]) => {
@@ -189,6 +197,43 @@ export default function Home() {
     const cards = await fetchDueCards(user.id, deckId)
     if (cards.length === 0) return
     setStudyCards(shuffleArray(cards))
+    setStudyBatch(0)
+    setStudyResults({ correct: 0, incorrect: 0 })
+    setStudyReversed(false)
+    setGameState('studying')
+  }
+
+  const handleStartExam = () => {
+    // Pick 20 random cards from all decks
+    const allCards: DueCard[] = []
+    for (const deck of decks) {
+      deck.cards.forEach((card, i) => {
+        allCards.push({
+          id: deck.id ? `${deck.id}-${i}` : `local-${i}`,
+          front: card.front,
+          back: card.back,
+          deckId: deck.id || 'local',
+          deckTitle: deck.title,
+          stability: 1.0,
+          difficulty: 0.5,
+        })
+      })
+    }
+    const shuffled = shuffleArray(allCards).slice(0, 20)
+    setStudyCards(shuffled)
+    setGameState('exam')
+  }
+
+  const handleExamComplete = (results: { correct: number; incorrect: number; timeUsed: number }) => {
+    setExamResults({ ...results, total: studyCards.length })
+    setGameState('exam-result')
+  }
+
+  const handleStudyLeeches = async () => {
+    if (!user) return
+    const leeches = await getLeechCards(user.id)
+    if (leeches.length === 0) return
+    setStudyCards(leeches)
     setStudyBatch(0)
     setStudyResults({ correct: 0, incorrect: 0 })
     setStudyReversed(false)
@@ -320,6 +365,23 @@ export default function Home() {
               }}
             />
             <TodayView dueCount={dueCount} onStudy={() => handleStartStudy()} />
+            {/* Quick actions */}
+            <div className="mb-6 flex items-center gap-4">
+              <button
+                onClick={handleStartExam}
+                className="text-xs px-3 py-1.5 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-300 hover:text-white hover:border-neutral-700 transition-colors cursor-pointer"
+              >
+                Simulado (20 cards, 10 min)
+              </button>
+              {leechCount > 0 && (
+                <button
+                  onClick={handleStudyLeeches}
+                  className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+                >
+                  {leechCount} difíceis
+                </button>
+              )}
+            </div>
             <DeckSelector
               decks={decks}
               onSelect={(deck) => handleStudyDeck(deck)}
@@ -361,6 +423,26 @@ export default function Home() {
             totalDue={studyCards.length}
             reviewed={Math.min((studyBatch + 1) * 20, studyCards.length)}
             onContinue={handleStudyContinue}
+            onBack={handleBackToMenu}
+          />
+        )}
+
+        {gameState === 'exam' && studyCards.length > 0 && (
+          <ExamMode
+            cards={studyCards}
+            timeLimit={600}
+            onComplete={handleExamComplete}
+            onBack={handleBackToMenu}
+          />
+        )}
+
+        {gameState === 'exam-result' && (
+          <ExamResult
+            correct={examResults.correct}
+            incorrect={examResults.incorrect}
+            total={examResults.total}
+            timeUsed={examResults.timeUsed}
+            timeLimit={600}
             onBack={handleBackToMenu}
           />
         )}

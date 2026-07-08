@@ -42,6 +42,13 @@ export default function RootLayout({
                   navigator.serviceWorker.register('/sw.js')
                 })
               }
+              // Apply saved theme
+              (function() {
+                try {
+                  var t = localStorage.getItem('theme');
+                  if (t === 'light') document.documentElement.classList.add('light-theme');
+                } catch(e) {}
+              })();
             `,
           }}
         />

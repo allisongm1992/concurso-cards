@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { DeckData } from '@/data/sample-decks'
 import { exportDeckCSV } from '@/lib/deck-io'
 import { copyShareLink } from '@/lib/share'
@@ -25,15 +26,33 @@ const subjectDots: Record<string, string> = {
 }
 
 export default function DeckSelector({ decks, onSelect, onStudy, onReverse, onCreateNew, onImport }: DeckSelectorProps) {
+  const [search, setSearch] = useState('')
+
   const handleExport = (e: React.MouseEvent, deck: DeckData) => {
     e.stopPropagation()
     exportDeckCSV(deck)
   }
 
+  const filteredDecks = search.trim()
+    ? decks.filter(d =>
+        d.title.toLowerCase().includes(search.toLowerCase()) ||
+        d.subject.toLowerCase().includes(search.toLowerCase())
+      )
+    : decks
+
   return (
     <div className="w-full">
       <div className="mb-10">
         <h1 className="text-3xl font-bold tracking-tight">Decks</h1>
+        {decks.length > 5 && (
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar deck..."
+            className="w-full mt-4 px-4 py-2.5 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-neutral-100 placeholder-neutral-700 focus:outline-none focus:border-neutral-600 transition-colors"
+          />
+        )}
       </div>
 
       {/* Actions */}
@@ -54,7 +73,7 @@ export default function DeckSelector({ decks, onSelect, onStudy, onReverse, onCr
 
       {/* Deck list */}
       <div className="border-t border-neutral-900">
-        {decks.map((deck, index) => (
+        {filteredDecks.map((deck, index) => (
           <div
             key={index}
             className="border-b border-neutral-900 py-4 group"
@@ -64,6 +83,10 @@ export default function DeckSelector({ decks, onSelect, onStudy, onReverse, onCr
               <div className="flex-1 min-w-0">
                 <div className="text-sm text-neutral-100 truncate">{deck.title}</div>
                 <div className="text-xs text-neutral-600 truncate">{deck.subject} · {deck.cards.length} cards</div>
+              </div>
+              {/* Progress indicator - shows if any cards have been reviewed */}
+              <div className="text-[10px] text-neutral-700 tabular-nums">
+                {deck.cards.length}
               </div>
             </div>
             {/* Actions row */}

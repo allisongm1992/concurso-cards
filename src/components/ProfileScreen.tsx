@@ -1,8 +1,10 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { LevelInfo } from '@/lib/xp'
 import { MEDALS, UnlockedMedal, Tier } from '@/lib/medals'
 import { UserProgress } from '@/lib/progress'
+import { getTheme, setTheme, Theme } from '@/lib/theme'
 
 interface ProfileScreenProps {
   levelInfo: LevelInfo
@@ -107,6 +109,35 @@ export default function ProfileScreen({ levelInfo, progress, medals, onBack }: P
           </div>
         </div>
       </div>
+
+      {/* Theme toggle */}
+      <ThemeToggle />
+    </div>
+  )
+}
+
+function ThemeToggle() {
+  const [current, setCurrent] = useState<Theme>('dark')
+
+  useEffect(() => {
+    setCurrent(getTheme())
+  }, [])
+
+  const toggle = () => {
+    const next = current === 'dark' ? 'light' : 'dark'
+    setTheme(next)
+    setCurrent(next)
+  }
+
+  return (
+    <div className="mt-10 flex items-center justify-between py-4 border-t border-neutral-900">
+      <span className="text-xs text-neutral-600">Tema</span>
+      <button
+        onClick={toggle}
+        className="text-xs text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+      >
+        {current === 'dark' ? 'Claro' : 'Escuro'}
+      </button>
     </div>
   )
 }
