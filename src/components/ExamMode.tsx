@@ -39,8 +39,10 @@ export default function ExamMode({ cards, timeLimit, onComplete, onBack }: ExamM
   // When time runs out or all cards done
   useEffect(() => {
     if (finished) {
+      // Use refs to avoid stale closure
       onComplete({ correct, incorrect, timeUsed: timeLimit - timeLeft })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished])
 
   const handleReveal = () => setRevealed(true)

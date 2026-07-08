@@ -25,7 +25,7 @@ import { MedalCheck, UnlockedMedal } from '@/lib/medals'
 import { getProgress, recordStudySession, recordDeckCreated, getUserMedals, UserProgress } from '@/lib/progress'
 import { getDailyGoal, setDailyGoalTarget, incrementDailyProgress, DailyGoal } from '@/lib/daily-goal'
 import { decodeDeckFromShare } from '@/lib/share'
-import { getLeechCards, LeechCard } from '@/lib/leech'
+import { getLeechCards } from '@/lib/leech'
 import ExamMode from '@/components/ExamMode'
 import ExamResult from '@/components/ExamResult'
 import DailyGoalBar from '@/components/DailyGoalBar'
@@ -45,14 +45,12 @@ export default function Home() {
   const { user, loading, signOut } = useAuth()
   const [gameState, setGameState] = useState<GameState>('login')
   const [decks, setDecks] = useState<(DeckData & { id?: string })[]>(sampleDecks)
-  const [syncing, setSyncing] = useState(false)
   const [streak, setStreak] = useState<StreakData | null>(null)
   const [showSplash, setShowSplash] = useState(false)
   const [dueCount, setDueCount] = useState(0)
   const [studyCards, setStudyCards] = useState<DueCard[]>([])
   const [studyResults, setStudyResults] = useState({ correct: 0, incorrect: 0 })
   const [studyBatch, setStudyBatch] = useState(0)
-  const [studyReversed, setStudyReversed] = useState(false)
   const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null)
   const [progress, setProgress] = useState<UserProgress | null>(null)
   const [medals, setMedals] = useState<UnlockedMedal[]>([])
@@ -71,9 +69,9 @@ export default function Home() {
       if (shared) {
         const confirmed = confirm(`Importar deck "${shared.title}" (${shared.cards.length} cards)?`)
         if (confirmed) {
-          handleSaveDeck(shared)
+          // Add to local decks immediately
+          setDecks(prev => [{ ...shared, id: undefined }, ...prev])
         }
-        // Clean URL
         window.history.replaceState({}, '', window.location.pathname)
       }
     }
@@ -83,15 +81,15 @@ export default function Home() {
   useEffect(() => {
     if (user) {
       loadDecks()
-      loadStreak()
-      loadDueCount()
-      loadProgress()
+      loadStreak().catch(() => {})
+      loadDueCount().catch(() => {})
+      loadProgress().catch(() => {})
     }
   }, [user])
 
   const loadDecks = async () => {
     if (!user) return
-    setSyncing(true)
+
 
     try {
       await seedSampleDecks(user.id, sampleDecks)
@@ -122,7 +120,7 @@ export default function Home() {
       }
     }
 
-    setSyncing(false)
+
   }
 
   const loadStreak = async () => {
@@ -199,7 +197,7 @@ export default function Home() {
     setStudyCards(shuffleArray(cards))
     setStudyBatch(0)
     setStudyResults({ correct: 0, incorrect: 0 })
-    setStudyReversed(false)
+
     setGameState('studying')
   }
 
@@ -236,7 +234,7 @@ export default function Home() {
     setStudyCards(leeches)
     setStudyBatch(0)
     setStudyResults({ correct: 0, incorrect: 0 })
-    setStudyReversed(false)
+
     setGameState('studying')
   }
 
@@ -253,7 +251,7 @@ export default function Home() {
     setStudyCards(shuffleArray(dueCards))
     setStudyBatch(0)
     setStudyResults({ correct: 0, incorrect: 0 })
-    setStudyReversed(reversed)
+
     setGameState('studying')
   }
 

@@ -10,7 +10,7 @@ export interface SyncedDeck {
   cards: CardPair[]
 }
 
-// Buscar decks do usuário + públicos
+// Buscar decks do usuário + públicos (single query, no N+1)
 export async function fetchDecks(userId: string): Promise<SyncedDeck[]> {
   const { data: decks, error } = await supabase
     .from('decks')
@@ -18,27 +18,30 @@ export async function fetchDecks(userId: string): Promise<SyncedDeck[]> {
     .or(`user_id.eq.${userId},is_public.eq.true`)
     .order('created_at', { ascending: false })
 
-  if (error || !decks) return []
+  if (error || !decks || decks.length === 0) return []
 
-  const decksWithCards: SyncedDeck[] = []
+  // Fetch ALL cards for these decks in one query
+  const deckIds = decks.map(d => d.id)
+  const { data: allCards } = await supabase
+    .from('cards')
+    .select('deck_id, front, back')
+    .in('deck_id', deckIds)
 
-  for (const deck of decks) {
-    const { data: cards } = await supabase
-      .from('cards')
-      .select('front, back')
-      .eq('deck_id', deck.id)
-
-    decksWithCards.push({
-      id: deck.id,
-      title: deck.title,
-      subject: deck.subject,
-      description: deck.description,
-      is_public: deck.is_public,
-      cards: cards ?? [],
-    })
+  // Group cards by deck_id
+  const cardsByDeck: Record<string, CardPair[]> = {}
+  for (const card of allCards ?? []) {
+    if (!cardsByDeck[card.deck_id]) cardsByDeck[card.deck_id] = []
+    cardsByDeck[card.deck_id].push({ front: card.front, back: card.back })
   }
 
-  return decksWithCards
+  return decks.map(deck => ({
+    id: deck.id,
+    title: deck.title,
+    subject: deck.subject,
+    description: deck.description,
+    is_public: deck.is_public,
+    cards: cardsByDeck[deck.id] ?? [],
+  }))
 }
 
 // Criar novo deck com cards
