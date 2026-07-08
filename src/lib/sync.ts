@@ -92,17 +92,17 @@ export async function seedSampleDecks(
   userId: string,
   sampleDecks: DeckData[]
 ): Promise<void> {
-  // Checar se já tem decks
+  // Buscar títulos dos decks existentes do usuário
   const { data: existing } = await supabase
     .from('decks')
-    .select('id')
+    .select('title')
     .eq('user_id', userId)
-    .limit(1)
 
-  if (existing && existing.length > 0) return
+  const existingTitles = new Set((existing ?? []).map(d => d.title))
 
-  // Inserir decks de exemplo
+  // Inserir apenas decks que o usuário ainda não tem (por título)
   for (const deck of sampleDecks) {
+    if (existingTitles.has(deck.title)) continue
     await createDeck(userId, {
       title: deck.title,
       subject: deck.subject,
