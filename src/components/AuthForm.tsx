@@ -86,23 +86,33 @@ export default function AuthForm({ onAuthSuccess }: AuthFormProps) {
         </div>
 
         <form onSubmit={handleEmailAuth} className="space-y-3">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
-            placeholder="Email"
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-            className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
-            placeholder="Senha"
-          />
+          <div>
+            <label htmlFor="auth-email" className="sr-only">Email</label>
+            <input
+              id="auth-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+              placeholder="Email"
+              aria-label="Email"
+            />
+          </div>
+          <div>
+            <label htmlFor="auth-password" className="sr-only">Senha</label>
+            <input
+              id="auth-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              className="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-emerald-600 transition-colors"
+              placeholder="Senha"
+              aria-label="Senha"
+            />
+          </div>
 
           {error && (
             <div className="text-red-400 text-xs p-3 border border-red-900/30 rounded-lg">

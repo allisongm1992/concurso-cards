@@ -268,19 +268,23 @@ export default function Home() {
     setDailyGoal(updatedGoal)
 
     if (user) {
-      const updatedStreak = await recordDailyPlay(user.id)
-      setStreak(updatedStreak)
+      try {
+        const updatedStreak = await recordDailyPlay(user.id)
+        setStreak(updatedStreak)
 
-      const xpEarned = results.correct * 15 + results.incorrect * 5
-      const { progress: prog, newMedals } = await recordStudySession(
-        user.id,
-        totalCards,
-        results.correct,
-        xpEarned
-      )
-      setProgress(prog)
-      setLevelInfo(calculateLevel(prog.totalXp))
-      showMedalToast(newMedals)
+        const xpEarned = results.correct * 15 + results.incorrect * 5
+        const { progress: prog, newMedals } = await recordStudySession(
+          user.id,
+          totalCards,
+          results.correct,
+          xpEarned
+        )
+        setProgress(prog)
+        setLevelInfo(calculateLevel(prog.totalXp))
+        showMedalToast(newMedals)
+      } catch {
+        // Network error — study progress saved locally via dailyGoal, server sync failed silently
+      }
     }
   }
 
