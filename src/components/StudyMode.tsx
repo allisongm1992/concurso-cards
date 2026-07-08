@@ -96,7 +96,11 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
 
     // Record review only if user is logged in and card has a real ID
     if (userId && !currentCard.id.startsWith('local-')) {
-      await recordReview(userId, currentCard.id, currentCard.deckId, rating)
+      try {
+        await recordReview(userId, currentCard.id, currentCard.deckId, rating)
+      } catch {
+        // Continue even if save fails — don't block the study flow
+      }
     }
 
     const newCorrect = rating === 'good' ? correct + 1 : correct
@@ -194,12 +198,12 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
             {currentCard.deckTitle}
           </div>
         )}
-        <div className="text-xl font-medium text-neutral-100 leading-relaxed">
+        <div className="text-xl font-medium text-neutral-100 leading-relaxed max-h-[40vh] overflow-y-auto">
           {frontDisplay}
         </div>
 
         {revealed && !isClozeCard && (
-          <div className="mt-10 pt-10 border-t border-neutral-900 w-full animate-fade-in">
+          <div className="mt-10 pt-10 border-t border-neutral-900 w-full animate-fade-in max-h-[30vh] overflow-y-auto">
             <div className="text-base text-emerald-300 leading-relaxed">
               {backDisplay}
             </div>
@@ -229,7 +233,7 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleSuspend}
-                className="text-[11px] text-neutral-700 hover:text-neutral-400 transition-colors cursor-pointer"
+                className="min-h-[44px] px-4 text-xs text-neutral-700 hover:text-neutral-400 transition-colors cursor-pointer"
               >
                 Pular este card
               </button>
@@ -258,7 +262,7 @@ export default function StudyMode({ cards, userId, onComplete, onBack }: StudyMo
               <div className="flex justify-center">
                 <button
                   onClick={handleUndo}
-                  className="text-[11px] text-neutral-700 hover:text-neutral-400 transition-colors cursor-pointer"
+                  className="min-h-[44px] px-4 text-xs text-neutral-700 hover:text-neutral-400 transition-colors cursor-pointer"
                 >
                   Desfazer anterior
                 </button>

@@ -114,7 +114,7 @@ export default function DeckSelector({ decks, onSelect, onStudy, onReverse, onCr
               </button>
               <button
                 onClick={(e) => handleExport(e, deck)}
-                className="text-xs text-neutral-700 hover:text-neutral-400 transition-colors cursor-pointer opacity-0 group-hover:opacity-100"
+                className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors cursor-pointer"
               >
                 Exportar
               </button>
